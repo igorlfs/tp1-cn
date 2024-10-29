@@ -13,7 +13,7 @@ class TreeNode:
 
     def __repr__(self) -> str:
         if self.left is None and self.right is None:
-            return str(self.value)
+            return self.value
         return f"({self.left} {self.value} {self.right})"
 
     def evaluate(self, row: dict[str, float]) -> float:
