@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.utils.random import check_random_state
 
 from src.config import SEED
-from src.tree.evaluate import evaluate_fitness
+from src.evaluate import evaluate_fitness
 from src.tree.generate import generate_random_tree
 from src.util import split_df_train_test
 
