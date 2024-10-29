@@ -5,7 +5,7 @@ from sklearn.cluster import AgglomerativeClustering
 
 # TODO this could be a command line parameter
 SEED = 123456
-STOP_GROW_ODDS = 0.4
+GENERATE_LEAF_PROBABILITY = 0.4
 
 OPERATIONS = ["+", "-", "*", "/"]
 

@@ -36,5 +36,11 @@ class TreeNode:
 
         raise NotImplementedError
 
+    # We could limit the MAX_DEPTH by using this property
+    def depth(self) -> int:
+        left_depth = self.left.depth() if self.left else 0
+        right_depth = self.right.depth() if self.right else 0
+        return max(left_depth, right_depth) + 1
+
 
 OptNode = TreeNode | None
