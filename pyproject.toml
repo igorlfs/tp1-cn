@@ -1,0 +1,68 @@
+[project]
+name = "tp1"
+version = "0.1.0"
+description = "TP1 Computação Natural 2024/2"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gplearn>=0.4.2",
+    "graphviz>=0.20.3",
+    "ipykernel>=6.29.5",
+    "pandas>=2.2.3",
+    "scikit-learn>=1.5.2",
+]
+
+[tool.basedpyright]
+reportMissingTypeStubs = false
+venvPath = "."
+venv = ".venv"
+# ["off", "basic", "standard", "strict", "all"]
+typeCheckingMode = "basic"
+
+[tool.ruff]
+line-length = 100
+[tool.ruff.lint]
+select = [
+    "S",
+    "INP",
+    "PYI",
+    "TCH",
+    "E",    # Pycodestyle's Errors
+    "W",    # Pycodestyle's Warnings
+    "F",    # Pyflakes
+    "C90",  # McCabe (Ciclomatic Complexity)
+    "I",    # Isort
+    "N",    # Pep8-naming
+    "UP",   # Pyupgrade
+    "RUF",  # Ruff's builtin rules
+    "PERF", # Perflint
+    "NPY",  # Numpy
+    "FLY",  # Flynt
+    "TRY",  # Tryceratops
+    "PL",   # Pylint
+    "PGH",  # Pygrep-hooks
+    "PD",   # Pandas-vet
+    # Flake 8
+    "ANN", # Annotations
+    "BLE", # Blind except
+    "B",   # Bugbear
+    "A",   # Builtins
+    "C4",  # Comprehensions
+    "EM",  # Errmsg
+    "ISC", # Implicit str concat
+    "ICN", # Import Conventions
+    "PIE", # Pie
+    "Q",   # Quotes
+    "RSE", # Raise
+    "RET", # Return
+    "SIM", # Simplify
+    "TID", # Tidy imports
+    "ARG", # Unused arguments
+    "PTH", # Use Pathlib
+]
+ignore = [
+    "PD901",  # df var name
+    "S101",
+    "E501",
+    "ANN101",
+]
