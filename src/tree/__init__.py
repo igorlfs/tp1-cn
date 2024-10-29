@@ -35,3 +35,6 @@ class TreeNode:
             return left_value / right_value
 
         raise NotImplementedError
+
+
+OptNode = TreeNode | None

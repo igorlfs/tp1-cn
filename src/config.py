@@ -9,6 +9,8 @@ STOP_GROW_ODDS = 0.4
 
 OPERATIONS = ["+", "-", "*", "/"]
 
+MUTATION_PROBABILITY = 0.5
+
 EPSILON = 1e-5
 
 

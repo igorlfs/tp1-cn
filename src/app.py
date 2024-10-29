@@ -3,14 +3,15 @@ from sklearn.utils.random import check_random_state
 
 from src.config import SEED
 from src.evaluate import evaluate_fitness
+from src.mutate import mutate_tree
 from src.tree.generate import generate_random_tree
 from src.util import split_df_train_test
 
 rng = check_random_state(SEED)
 
 # TODO paramatreizar
-MAX_GENERATIONS = 1
-POPULATION_SIZE = 30
+MAX_GENERATIONS = 10
+POPULATION_SIZE = 1
 MAX_DEPTH = 7
 DATA_PATH = "./data"
 DATASET_PATH = f"{DATA_PATH}/breast_cancer_coimbra_"
@@ -33,6 +34,10 @@ def main() -> None:
 
     population = [generate_random_tree(features, MAX_DEPTH) for _ in range(POPULATION_SIZE)]
     for _ in range(MAX_GENERATIONS):
-        for i in population:
+        for i, tree in enumerate(population):
+            # print(population)
             # Evaluate fitness, select, crossover, mutate, replace
-            print(evaluate_fitness(x_train, i, y_train))
+            print(evaluate_fitness(x_train, tree, y_train))
+            population[i] = mutate_tree(tree, features)
+
+
