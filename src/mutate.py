@@ -5,11 +5,13 @@ from src.tree.generate import generate_random_tree
 
 def mutate_operator_to_terminal(node: TreeNode, features: list[str]) -> TreeNode:
     """Replace an operator node with a terminal node. `node` must be an Operator."""
+    # Since node is an Operator, it should have children
     assert node.left is not None and node.right is not None
 
     if node.value in OPERATIONS:
         return TreeNode(rng.choice(features))
 
+    # Likewise, if the node is not an Operator, it shouldn't have children
     raise ValueError
 
 
