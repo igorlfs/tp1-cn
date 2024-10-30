@@ -10,7 +10,6 @@ from src.util import split_df_data_label
 
 def main() -> None:
     dataset_path = config["dataset"].get_path()
-    # TODO This could be more robust
     df_train = pd.read_csv(f"{dataset_path}train.csv")
 
     features: list[str] = df_train.columns.to_list()
