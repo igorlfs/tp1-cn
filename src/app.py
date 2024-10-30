@@ -28,6 +28,7 @@ def main() -> None:
         generate_random_tree(features, config["max_depth"])
         for _ in range(config["population_size"])
     ]
+
     for _ in range(config["max_generations"]):
         # Evaluate fitness, select, crossover, mutate, replace
         fitness = np.zeros(config["population_size"], dtype=np.float64)
