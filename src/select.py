@@ -13,12 +13,7 @@ def select_population(
     """Select a new population using tournament selection."""
     selected: list[TreeNode] = []
 
-    if config["elitism_size"] > 0:
-        fitness_with_index = list(enumerate(fitness))
-        sorted_fitness = sorted(fitness_with_index, key=lambda x: x[1], reverse=True)
-        selected.extend([population[x[0]] for x in sorted_fitness[: config["elitism_size"]]])
-
-    for _ in range(config["population_size"] - config["elitism_size"]):
+    for _ in range(config["population_size"]):
         selected_individual = tournament_selection(fitness, population)
         selected.append(selected_individual)
 
