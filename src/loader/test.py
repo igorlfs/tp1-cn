@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from src.configuration import Configuration
 from src.configuration.validate import validate_config
+from src.datasets import Datasets
 
 
 def load_test_config() -> Configuration:
@@ -18,6 +19,9 @@ def load_test_config() -> Configuration:
             "population_size": int(os.environ["POPULATION_SIZE"]),
             "tournament_size": int(os.environ["TOURNAMENT_SIZE"]),
             "elitism_size": int(os.environ["ELITISM_SIZE"]),
+            "max_generations": int(os.environ["MAX_GENERATIONS"]),
+            "max_depth": int(os.environ["MAX_DEPTH"]),
+            "dataset": Datasets(os.environ["DATASET"]),
         }
     )
 

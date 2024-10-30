@@ -21,7 +21,12 @@
                 "--tournament-size",
                 "2",
                 "--elitism-size",
-                "1"
+                "1",
+                "--max-generations",
+                "1",
+                "--max-depth",
+                "7",
+                "breast_cancer_coimbra"
             ]
         }
     ]

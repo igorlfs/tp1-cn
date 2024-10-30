@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 
 from src.configuration import Configuration
 from src.configuration.validate import validate_config
+from src.datasets import Datasets
 
 
 def define_arguments(argument_parser: ArgumentParser) -> None:
@@ -11,7 +12,7 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         dest="seed",
         required=True,
         type=int,
-        help="Seed to control randomness",
+        help="Seed to control randomness.",
     )
     argument_parser.add_argument(
         "-l",
@@ -19,7 +20,7 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         dest="leaf_prob",
         required=True,
         type=float,
-        help="Probability of generating a leaf when creating a random tree",
+        help="Probability of generating a leaf when creating a random tree.",
     )
     argument_parser.add_argument(
         "-m",
@@ -27,7 +28,7 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         dest="mutation_prob",
         required=True,
         type=float,
-        help="Probability of mutating each node when traversing the tree",
+        help="Probability of mutating each node when traversing the tree.",
     )
     argument_parser.add_argument(
         "-p",
@@ -35,7 +36,7 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         dest="population_size",
         required=True,
         type=int,
-        help="Number of individuals for each generation",
+        help="Number of individuals for each generation.",
     )
     argument_parser.add_argument(
         "-t",
@@ -43,7 +44,7 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         dest="tournament_size",
         required=True,
         type=int,
-        help="Number of individuals when using per tournament when using tournament selection",
+        help="Number of individuals when using per tournament when using tournament selection.",
     )
     argument_parser.add_argument(
         "-e",
@@ -52,6 +53,27 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         required=True,
         type=int,
         help="Number of individuals to always select. If zero, there's no elitism.",
+    )
+    argument_parser.add_argument(
+        "-g",
+        "--max-generations",
+        dest="max_generations",
+        required=True,
+        type=int,
+        help="Maximum number of iterations.",
+    )
+    argument_parser.add_argument(
+        "-d",
+        "--max-depth",
+        dest="max_depth",
+        required=True,
+        type=int,
+        help="Maximum depth of tree.",
+    )
+    argument_parser.add_argument(
+        dest="dataset",
+        type=Datasets,
+        help="Either 'breast_cancer_coimbra' or 'wine_red'",
     )
 
 
