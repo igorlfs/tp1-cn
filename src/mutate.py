@@ -20,8 +20,17 @@ def mutate_operator_to_terminal(node: TreeNode, features: list[str]) -> TreeNode
 
 
 def swap_operator(node: TreeNode) -> TreeNode:
+    """Update the node's value with a random Operation. `node` must be an Operator."""
     operator = random.choice(list(Operations))  # noqa: S311
     return TreeNode(operator, node.left, node.right)
+
+
+def swap_terminal(node: TreeNode, features: list[str]) -> TreeNode:
+    """Update the node's value with a random feature. `node` must be a Terminal."""
+    assert node.left is None and node.right is None
+
+    feature = rng.choice(features)
+    return TreeNode(feature, node.left, node.right)
 
 
 def mutate_node(node: OptNode, features: list[str]) -> OptNode:
@@ -30,14 +39,19 @@ def mutate_node(node: OptNode, features: list[str]) -> OptNode:
         return None
 
     if rng.random() < config["mutation_prob"]:
+        # For now, it's easier to use a single variable to control which mutation will be used
+        # i.e., swap vs (reduce|grow)
         if node.value in list(Operations):
-            if rng.random() < config["reduction_prob"]:
-                return mutate_operator_to_terminal(node, features)
-            else:  # noqa: RET505
+            if rng.random() < config["swap_prob"]:
                 return swap_operator(node)
-        else:
-            # TODO there must a better way to keep it shallow
-            return generate_random_tree(features, max_depth=2)  # Keep it shallow
+            else:  # noqa: RET505
+                return mutate_operator_to_terminal(node, features)
+        else:  # noqa: PLR5501
+            if rng.random() < config["swap_prob"]:
+                return swap_terminal(node, features)
+            else:  # noqa: RET505
+                # TODO there must a better way to keep it shallow
+                return generate_random_tree(features, max_depth=2)  # Keep it shallow
 
     node.left = mutate_node(node.left, features)
     node.right = mutate_node(node.right, features)
