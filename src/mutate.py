@@ -1,3 +1,5 @@
+import random
+
 from src.globals import rng
 from src.loader import config
 from src.operations import Operations
@@ -17,6 +19,11 @@ def mutate_operator_to_terminal(node: TreeNode, features: list[str]) -> TreeNode
     raise ValueError
 
 
+def swap_operator(node: TreeNode) -> TreeNode:
+    operator = random.choice(list(Operations))  # noqa: S311
+    return TreeNode(operator, node.left, node.right)
+
+
 def mutate_node(node: OptNode, features: list[str]) -> OptNode:
     """Mutate a node with a given probability."""
     if node is None:
@@ -24,8 +31,11 @@ def mutate_node(node: OptNode, features: list[str]) -> OptNode:
 
     if rng.random() < config["mutation_prob"]:
         if node.value in list(Operations):
-            return mutate_operator_to_terminal(node, features)
-        else:  # noqa: RET505
+            if rng.random() < config["reduction_prob"]:
+                return mutate_operator_to_terminal(node, features)
+            else:  # noqa: RET505
+                return swap_operator(node)
+        else:
             # TODO there must a better way to keep it shallow
             return generate_random_tree(features, max_depth=2)  # Keep it shallow
 

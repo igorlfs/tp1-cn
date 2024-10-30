@@ -16,6 +16,7 @@ def load_test_config() -> Configuration:
             "seed": int(os.environ["SEED"]),
             "leaf_prob": float(os.environ["LEAF_PROBABILITY"]),
             "mutation_prob": float(os.environ["MUTATION_PROBABILITY"]),
+            "reduction_prob": float(os.environ["REDUCTION_PROBABILITY"]),
             "population_size": int(os.environ["POPULATION_SIZE"]),
             "tournament_size": int(os.environ["TOURNAMENT_SIZE"]),
             "elitism_size": int(os.environ["ELITISM_SIZE"]),

@@ -1,7 +1,18 @@
 import pytest
 
-from src.mutate import mutate_operator_to_terminal
+from src.mutate import mutate_operator_to_terminal, swap_operator
 from src.tree import TreeNode
+
+
+def test_swap_operator() -> None:
+    tree = TreeNode("foo")
+    tree = TreeNode("+", tree, tree)
+
+    swapped_tree = swap_operator(tree)
+
+    assert swapped_tree.value == "*"
+    assert str(swapped_tree.left) == "foo"
+    assert str(swapped_tree.right) == "foo"
 
 
 def test_mutate_operator_to_terminal() -> None:

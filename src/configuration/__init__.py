@@ -13,6 +13,7 @@ class Configuration(TypedDict):
 
     leaf_prob: float
     mutation_prob: float
+    reduction_prob: float
 
     population_size: int
     tournament_size: int

@@ -31,6 +31,14 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         help="Probability of mutating each node when traversing the tree.",
     )
     argument_parser.add_argument(
+        "-r",
+        "--reduction-probability",
+        dest="reduction_prob",
+        required=True,
+        type=float,
+        help="The probability of reducting an operator to a terminal (as opposed to swapping operators), when mutating nodes with operators.",
+    )
+    argument_parser.add_argument(
         "-p",
         "--population-size",
         dest="population_size",
