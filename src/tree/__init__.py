@@ -45,5 +45,18 @@ class TreeNode:
         right_depth = self.right.depth() if self.right else 0
         return max(left_depth, right_depth) + 1
 
+    def _traverse(self, nodes: list[TreeNode]) -> list[TreeNode]:
+        if self is not None:
+            nodes.append(self)
+            if self.left:
+                self.left._traverse(nodes)
+            if self.right:
+                self.right._traverse(nodes)
+        return nodes
+
+    def traverse(self) -> list[TreeNode]:
+        nodes = []
+        return self._traverse(nodes)
+
 
 OptNode = TreeNode | None

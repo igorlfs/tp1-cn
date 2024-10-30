@@ -60,3 +60,15 @@ def test_tree_evaluate_not_implemented() -> None:
 
     with pytest.raises(NotImplementedError):
         tree.evaluate(row)
+
+
+def test_traverse() -> None:
+    tree = TreeNode("foo")
+    tree = TreeNode("+", tree, tree)
+
+    nodes = tree.traverse()
+
+    assert len(nodes) == 3  # noqa: PLR2004
+    assert str(nodes[0]) == "(foo + foo)"
+    assert str(nodes[1]) == "foo"
+    assert str(nodes[2]) == "foo"
