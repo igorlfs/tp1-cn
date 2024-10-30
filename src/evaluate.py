@@ -23,5 +23,5 @@ def _get_distance_matrix(x: pd.DataFrame, tree: TreeNode) -> NDArray[np.float64]
         eval1 = tree.evaluate(row1.to_dict())
         for j, row2 in x.iterrows():
             eval2 = tree.evaluate(row2.to_dict())
-            distance_matrix[i, j] = eval1 - eval2
+            distance_matrix[i, j] = abs(eval1 - eval2)
     return distance_matrix
