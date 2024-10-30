@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING, Final, TypedDict
 
 if TYPE_CHECKING:
     from src.datasets import Datasets
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class Configuration(TypedDict):
-    seed: int
+    seed: Final[int]
 
     leaf_prob: float
     mutation_prob: float
