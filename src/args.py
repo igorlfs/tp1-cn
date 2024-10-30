@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 from src.configuration import Configuration
 from src.configuration.validate import validate_config
 from src.datasets import Datasets
+from src.jupyter import handle_jupyter_arguments, is_interactive
 
 
 def define_arguments(argument_parser: ArgumentParser) -> None:
@@ -85,6 +86,10 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
 
 
 def load_config_from_args() -> Configuration:
+    # Add arguments if running with Jupyter
+    if is_interactive():
+        handle_jupyter_arguments()
+
     argument_parser = ArgumentParser()
     define_arguments(argument_parser)
     arguments = vars(argument_parser.parse_args())
