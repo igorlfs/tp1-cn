@@ -6,7 +6,7 @@ from src.operations import Operations
 
 class TreeNode:
     def __init__(
-        self, value: str, left: None | TreeNode = None, right: None | TreeNode = None
+        self, value: str | Operations, left: None | TreeNode = None, right: None | TreeNode = None
     ) -> None:
         self.value = value
         self.left = left
@@ -15,6 +15,8 @@ class TreeNode:
     def __repr__(self) -> str:
         if self.left is None and self.right is None:
             return self.value
+        if isinstance(self.value, Operations):
+            return f"({self.left} {self.value.value} {self.right})"
         return f"({self.left} {self.value} {self.right})"
 
     def evaluate(self, row: dict[str, float]) -> float:
