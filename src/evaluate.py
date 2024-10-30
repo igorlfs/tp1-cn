@@ -1,11 +1,13 @@
 import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
+from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics.cluster import v_measure_score
 
-from src.config import model
 from src.tree import TreeNode
 from src.util import get_distance_matrix
+
+model = AgglomerativeClustering(metric="precomputed", linkage="average")
 
 
 def evaluate_fitness(x_train: pd.DataFrame, tree: TreeNode, y_train: NDArray) -> np.float64:

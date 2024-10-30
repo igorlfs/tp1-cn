@@ -1,6 +1,6 @@
 import pytest
 
-from src.config import EPSILON
+from src.constants import EPSILON
 from src.tree import TreeNode
 
 LEAF_VALUE = 7.0

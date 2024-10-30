@@ -8,7 +8,21 @@
             "console": "integratedTerminal",
             "python": "${workspaceFolder}/.venv/bin/python",
             "module": "src",
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--seed",
+                "123456",
+                "--leaf-probability",
+                "0.4",
+                "--mutation-probability",
+                "0.5",
+                "--population-size",
+                "6",
+                "--tournament-size",
+                "2",
+                "--elitism-size",
+                "1"
+            ]
         }
     ]
 }

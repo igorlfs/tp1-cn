@@ -2,16 +2,15 @@ import numpy as np
 import pandas as pd
 from sklearn.utils.random import check_random_state
 
-from src.config import POPULATION_SIZE, SEED
 from src.evaluate import evaluate_fitness
+from src.loader import config
 from src.mutate import mutate_tree
 from src.select import select_population
 from src.tree.generate import generate_random_tree
 from src.util import split_df_data_label
 
-rng = check_random_state(SEED)
+rng = check_random_state(config["seed"])
 
-# TODO paramatreizar
 MAX_GENERATIONS = 1
 MAX_DEPTH = 7
 DATA_PATH = "./data"
@@ -33,10 +32,12 @@ def main() -> None:
     df_test = pd.read_csv(f"{DATASET_PATH}test.csv")
     x_test, y_test = split_df_data_label(df_test)
 
-    population = [generate_random_tree(features, MAX_DEPTH) for _ in range(POPULATION_SIZE)]
+    population = [
+        generate_random_tree(features, MAX_DEPTH) for _ in range(config["population_size"])
+    ]
     for _ in range(MAX_GENERATIONS):
         # Evaluate fitness, select, crossover, mutate, replace
-        fitness = np.zeros(POPULATION_SIZE, dtype=np.float64)
+        fitness = np.zeros(config["population_size"], dtype=np.float64)
         for i, tree in enumerate(population):
             fitness[i] = evaluate_fitness(x_train, tree, y_train)
         [print(i) for i in fitness]

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from src.config import EPSILON
+from src.constants import EPSILON
+from src.operations import Operations
 
 
 class TreeNode:
@@ -23,18 +24,20 @@ class TreeNode:
         left_value = self.left and self.left.evaluate(row) or 0
         right_value = self.right and self.right.evaluate(row) or 0
 
-        if self.value == "+":
-            return left_value + right_value
-        if self.value == "-":
-            return left_value - right_value
-        if self.value == "*":
-            return left_value * right_value
-        if self.value == "/":
-            if right_value == 0:
-                return left_value / EPSILON
-            return left_value / right_value
-
-        raise NotImplementedError
+        match self.value:
+            case Operations.ADD:
+                return left_value + right_value
+            case Operations.SUB:
+                return left_value - right_value
+            case Operations.MUL:
+                return left_value * right_value
+            case Operations.DIV:
+                # Can I use the shorthand syntax here?
+                if right_value == 0:
+                    return left_value / EPSILON
+                return left_value / right_value
+            case _:
+                raise NotImplementedError
 
     # TODO We could limit the MAX_DEPTH by using this property
     def depth(self) -> int:
