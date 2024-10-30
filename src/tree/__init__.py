@@ -19,6 +19,18 @@ class TreeNode:
             return f"({self.left} {self.value.value} {self.right})"
         return f"({self.left} {self.value} {self.right})"
 
+    def to_dot(self) -> str:
+        """Generate Graphviz dot format string for the tree."""
+        label = self.value.value if isinstance(self.value, Operations) else self.value
+        dot_str = f'"{id(self)}" [label="{label}"];\n'
+        if self.left is not None:
+            dot_str += f'"{id(self)}" -> "{id(self.left)}";\n'
+            dot_str += self.left.to_dot()
+        if self.right is not None:
+            dot_str += f'"{id(self)}" -> "{id(self.right)}";\n'
+            dot_str += self.right.to_dot()
+        return dot_str
+
     def evaluate(self, row: dict[str, float]) -> float:
         if self.left is None and self.right is None:
             return row[self.value]
