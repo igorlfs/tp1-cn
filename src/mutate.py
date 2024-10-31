@@ -21,7 +21,7 @@ def mutate_operator_to_terminal(node: TreeNode, features: list[str]) -> TreeNode
 
 def swap_operator(node: TreeNode) -> TreeNode:
     """Update the node's value with a random Operation. `node` must be an Operator."""
-    operator = random.choice(list(Operations))  # noqa: S311
+    operator = random.choice(list(Operations))
     return TreeNode(operator, node.left, node.right)
 
 

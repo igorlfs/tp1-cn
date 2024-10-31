@@ -40,13 +40,13 @@ def main() -> None:
 
         while len(next_generation) < config["population_size"]:
             if rng.random() < config["crossover_prob"]:
-                parent1 = deepcopy(random.choice(candidates))  # noqa: S311
-                parent2 = deepcopy(random.choice(candidates))  # noqa: S311
+                parent1 = deepcopy(random.choice(candidates))
+                parent2 = deepcopy(random.choice(candidates))
                 offspring1, offspring2 = crossover(parent1, parent2)
                 assert offspring1 is not None and offspring2 is not None
                 next_generation.extend([offspring1, offspring2])
             else:
-                tree = deepcopy(random.choice(candidates))  # noqa: S311
+                tree = deepcopy(random.choice(candidates))
                 mutated = mutate_tree(tree, features)
                 next_generation.append(mutated)
 

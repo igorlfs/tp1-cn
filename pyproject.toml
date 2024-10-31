@@ -61,4 +61,4 @@ select = [
     "ARG", # Unused arguments
     "PTH", # Use Pathlib
 ]
-ignore = ["S101", "E501", "ANN101"]
+ignore = ["S101", "E501", "ANN101", "S311"]
