@@ -46,10 +46,7 @@ class TreeNode:
             case Operations.MUL:
                 return left_value * right_value
             case Operations.DIV:
-                # TODO Can I use the shorthand syntax here?
-                if right_value == 0:
-                    return left_value / EPSILON
-                return left_value / right_value
+                return left_value / EPSILON if right_value == 0 else left_value / right_value
             case _:
                 raise NotImplementedError
 
