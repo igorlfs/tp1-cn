@@ -18,12 +18,10 @@ def main() -> None:
     dataset_path = config["dataset"].get_path()
     df_train = pd.read_csv(f"{dataset_path}train.csv")
 
-    features: list[str] = df_train.columns.to_list()
+    features = df_train.columns.to_list()
 
     # The last column is the label
     features.pop()
-
-    assert features is not None
 
     x_train, y_train = split_df_data_label(df_train)
 
