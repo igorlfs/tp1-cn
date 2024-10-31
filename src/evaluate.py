@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from numba import jit
 from numpy.typing import NDArray
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics.cluster import v_measure_score
@@ -17,6 +18,7 @@ def evaluate_fitness(x: pd.DataFrame, tree: TreeNode, y: NDArray) -> float:
     return float(v_measure_score(y, y_pred))
 
 
+@jit(nopython=True)
 def _get_distance_matrix(n: int, evaluations: list[float]) -> NDArray[np.float64]:
     distance_matrix: NDArray[np.float64] = np.zeros(shape=(n, n))
     # TODO fazer a diferença antes ou depois?
