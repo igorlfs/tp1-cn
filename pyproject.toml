@@ -5,6 +5,7 @@ description = "TP1 Computação Natural 2024/2"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "coverage>=7.6.4",
     "graphviz>=0.20.3",
     "ipykernel>=6.29.5",
     "numba>=0.60.0",
