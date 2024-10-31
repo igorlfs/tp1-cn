@@ -23,7 +23,8 @@ def _get_distance_matrix(n: int, evaluations: list[float]) -> NDArray[np.float64
     distance_matrix: NDArray[np.float64] = np.zeros(shape=(n, n))
     # TODO fazer a diferença antes ou depois?
     for i in range(n):
-        for j in range(i, n):
+        distance_matrix[i, i] = 0
+        for j in range(i + 1, n):
             distance = abs(evaluations[i] - evaluations[j])
             distance_matrix[i, j] = distance
             distance_matrix[j, i] = distance
