@@ -9,11 +9,11 @@ from src.tree import TreeNode
 model = AgglomerativeClustering(metric="precomputed", linkage="average")
 
 
-def evaluate_fitness(x_train: pd.DataFrame, tree: TreeNode, y_train: NDArray) -> np.float64:
+def evaluate_fitness(x_train: pd.DataFrame, tree: TreeNode, y_train: NDArray) -> float:
     distance_matrix_train = _get_distance_matrix(x_train, tree)
     model.fit(distance_matrix_train)
     y_pred = model.fit_predict(distance_matrix_train)
-    return np.float64(v_measure_score(y_train, y_pred))
+    return float(v_measure_score(y_train, y_pred))
 
 
 def _get_distance_matrix(x: pd.DataFrame, tree: TreeNode) -> NDArray[np.float64]:

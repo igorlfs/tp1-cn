@@ -1,11 +1,9 @@
-import numpy as np
-
 from src.select import tournament_selection
 from src.tree import TreeNode
 
 
 def test_tournament_selection() -> None:
-    fitness = np.array([9, 5, 3, 7])
+    fitness = [9.0, 5.0, 3.0, 7.0]
     population = [TreeNode("foo"), TreeNode("bar"), TreeNode("biz"), TreeNode("buz")]
 
     # Selects indices [0] and [2]
