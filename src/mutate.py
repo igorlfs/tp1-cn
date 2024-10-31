@@ -39,15 +39,13 @@ def mutate_node(node: OptNode, features: list[str]) -> OptNode:
         return None
 
     if rng.random() < config["mutation_prob"]:
-        # For now, it's easier to use a single variable to control which mutation will be used
-        # i.e., swap vs (reduce|grow)
         if node.value in list(Operations):
-            if rng.random() < config["swap_prob"]:
+            if rng.random() < config["swap_operator_prob"]:
                 return swap_operator(node)
             else:  # noqa: RET505
                 return mutate_operator_to_terminal(node, features)
         else:  # noqa: PLR5501
-            if rng.random() < config["swap_prob"]:
+            if rng.random() < config["swap_terminal_prob"]:
                 return swap_terminal(node, features)
             else:  # noqa: RET505
                 # TODO there must a better way to keep it shallow

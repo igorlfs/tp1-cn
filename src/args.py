@@ -32,11 +32,28 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         help="Probability of mutating each node when traversing the tree.",
     )
     argument_parser.add_argument(
-        "--swap-probability",
-        dest="swap_prob",
+        "-st",
+        "--swap-terminal-probability",
+        dest="swap_terminal_prob",
         required=True,
         type=float,
-        help="The probability of swapping a node (as opposed to growing or reducing the node).",
+        help="Probability of swapping a terminal (as opposed to substituion with a new subtree).",
+    )
+    argument_parser.add_argument(
+        "-so",
+        "--swap-operator-probability",
+        dest="swap_operator_prob",
+        required=True,
+        type=float,
+        help="Probability of swapping an operator (as opposed to substituion with a terminal).",
+    )
+    argument_parser.add_argument(
+        "-c",
+        "--crossover-probability",
+        dest="crossover_prob",
+        required=True,
+        type=float,
+        help="Probability of using crossover instead of mutation to generate a new individual.",
     )
     argument_parser.add_argument(
         "-p",

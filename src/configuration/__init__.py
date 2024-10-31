@@ -13,7 +13,9 @@ class Configuration(TypedDict):
 
     leaf_prob: float
     mutation_prob: float
-    swap_prob: float
+    swap_terminal_prob: float
+    swap_operator_prob: float
+    crossover_prob: float
 
     population_size: int
     tournament_size: int
