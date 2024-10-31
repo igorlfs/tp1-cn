@@ -22,7 +22,7 @@ def select_population(
 
 def tournament_selection(fitness: NDArray[np.float64], population: list[TreeNode]) -> TreeNode:
     """Select the best individual from a tournament."""
-    tournament = rng.choice(len(fitness), min(config["tournament_size"], len(fitness)))
+    tournament = rng.choice(len(fitness), config["tournament_size"])
 
     tournament_fitness: list[tuple[int, np.float64]] = [(i, fitness[i]) for i in tournament]
 

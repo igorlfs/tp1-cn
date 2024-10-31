@@ -15,10 +15,18 @@ def validate_config(config: Configuration) -> None:
     # elitism_size can be zero (no elitism)
 
     try:
-        assert config["population_size"] > config["elitism_size"]
+        assert config["elitism_size"] < config["population_size"]
     except AssertionError:
-        print("Population size must be greater than elitism size")
+        print("Elitism size must be less than population size")
         raise ValueError from AssertionError
+
+    try:
+        assert config["tournament_size"] < config["population_size"]
+    except AssertionError:
+        print("Tournament size must less than population size")
+        raise ValueError from AssertionError
+
+    validate_size(config["tournament_size"], "Tournament size must be at least 1")
 
     validate_size(config["max_generations"], "There must at least 1 generation")
     validate_size(config["max_depth"], "Max depth must be greater than 0")
