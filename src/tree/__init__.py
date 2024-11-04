@@ -40,13 +40,13 @@ class TreeNode:
 
         match self.value:
             case Operations.ADD:
-                return left_value + right_value
+                return float(left_value + right_value)
             case Operations.SUB:
-                return left_value - right_value
+                return float(left_value - right_value)
             case Operations.MUL:
-                return left_value * right_value
+                return float(left_value * right_value)
             case Operations.DIV:
-                return left_value / EPSILON if right_value == 0 else left_value / right_value
+                return float(left_value / EPSILON if right_value == 0 else left_value / right_value)
             case _:
                 raise NotImplementedError
 
