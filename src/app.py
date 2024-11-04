@@ -1,4 +1,3 @@
-import random
 from copy import deepcopy
 
 import pandas as pd
@@ -35,18 +34,22 @@ def main() -> None:
 
         print(f"G{i}: Fit Best = {max(fitness)}")
 
-        candidates = select_population(population, fitness)
         next_generation = elitism(population, fitness, config["elitism_size"])
 
+        candidates = select_population(population, fitness)
+
+        j = 0
         while len(next_generation) < config["population_size"]:
             if rng.random() < config["crossover_prob"]:
-                parent1 = deepcopy(random.choice(candidates))
-                parent2 = deepcopy(random.choice(candidates))
+                parent1 = deepcopy(candidates[j])
+                parent2 = deepcopy(candidates[j + 1])
+                j += 2
                 offspring1, offspring2 = crossover(parent1, parent2)
                 assert offspring1 is not None and offspring2 is not None
                 next_generation.extend([offspring1, offspring2])
             else:
-                tree = deepcopy(random.choice(candidates))
+                tree = deepcopy(candidates[j])
+                j += 1
                 mutated = mutate_tree(tree, features)
                 next_generation.append(mutated)
 

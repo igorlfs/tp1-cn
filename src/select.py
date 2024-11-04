@@ -10,7 +10,8 @@ def select_population(
     """Select a new population using tournament selection."""
     selected: list[TreeNode] = []
 
-    for _ in range(config["population_size"]):
+    # we use 1 extra individual because the last operation might be a crossover
+    for _ in range(config["population_size"] - config["elitism_size"] + 1):
         selected_individual = tournament_selection(fitness, population)
         selected.append(selected_individual)
 
