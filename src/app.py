@@ -53,10 +53,21 @@ def main() -> None:
             if rng.random() < config["crossover_prob"]:
                 parent1 = deepcopy(candidates[j])
                 parent2 = deepcopy(candidates[j + 1])
+
+                avg_parents = 0.5 * (fitness[j] + fitness[j + 1])
+
                 j += 2
+
                 offspring1, offspring2 = crossover(parent1, parent2)
+
                 assert offspring1 is not None and offspring2 is not None
-                if evaluate_fitness(x_train, offspring1, y_train, num_labels) > avg:
+
+                if evaluate_fitness(x_train, offspring1, y_train, num_labels) > avg_parents:
+                    children_improved += 1
+                else:
+                    children_worsened += 1
+
+                if evaluate_fitness(x_train, offspring2, y_train, num_labels) > avg_parents:
                     children_improved += 1
                 else:
                     children_worsened += 1
