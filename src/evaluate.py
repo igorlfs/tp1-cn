@@ -21,7 +21,6 @@ def evaluate_fitness(x: pd.DataFrame, tree: TreeNode, y: NDArray) -> float:
 @jit(nopython=True)
 def _get_distance_matrix(n: int, evaluations: list[float]) -> NDArray[np.float64]:
     distance_matrix: NDArray[np.float64] = np.zeros(shape=(n, n))
-    # TODO fazer a diferença antes ou depois?
     for i in range(n):
         distance_matrix[i, i] = 0
         for j in range(i + 1, n):
