@@ -25,7 +25,7 @@ def main() -> None:
     # The last column is the label
     features.pop()
 
-    x_train, y_train = split_df_data_label(df_train)
+    x_train, y_train, num_labels = split_df_data_label(df_train)
 
     population = [
         generate_random_tree(features, config["max_depth"])
@@ -36,7 +36,7 @@ def main() -> None:
         print("Generation,BestFit,AvgFit,WorstFit,Repetitions,ChildImproved,ChildWorsened")
 
     for i in range(config["max_generations"]):
-        fitness = [evaluate_fitness(x_train, tree, y_train) for tree in population]
+        fitness = [evaluate_fitness(x_train, tree, y_train, num_labels) for tree in population]
         str_representations = [str(tree) for tree in population]
         repetitions = config["population_size"] - len(set(str_representations))
 
@@ -56,7 +56,7 @@ def main() -> None:
                 j += 2
                 offspring1, offspring2 = crossover(parent1, parent2)
                 assert offspring1 is not None and offspring2 is not None
-                if evaluate_fitness(x_train, offspring1, y_train) > avg:
+                if evaluate_fitness(x_train, offspring1, y_train, num_labels) > avg:
                     children_improved += 1
                 else:
                     children_worsened += 1
@@ -78,9 +78,9 @@ def main() -> None:
     best_tree = population[fitness.index(max(fitness))]
 
     df_test = pd.read_csv(f"{dataset_path}test.csv")
-    x_test, y_test = split_df_data_label(df_test)
+    x_test, y_test, _ = split_df_data_label(df_test)
 
-    fitness_test = evaluate_fitness(x_test, best_tree, y_test)
+    fitness_test = evaluate_fitness(x_test, best_tree, y_test, num_labels)
     if config["verbose"]:
         print(f"T,{fitness_test},0,0,0,0,0")
     else:

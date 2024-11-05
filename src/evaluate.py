@@ -7,12 +7,11 @@ from sklearn.metrics.cluster import v_measure_score
 
 from src.tree import TreeNode
 
-model = AgglomerativeClustering(metric="precomputed", linkage="average")
 
-
-def evaluate_fitness(x: pd.DataFrame, tree: TreeNode, y: NDArray) -> float:
+def evaluate_fitness(x: pd.DataFrame, tree: TreeNode, y: NDArray, num_labels: int) -> float:
     evaluations = [tree.evaluate(row.to_dict()) for _, row in x.iterrows()]
     distance_matrix_train = _get_distance_matrix(len(evaluations), evaluations)
+    model = AgglomerativeClustering(n_clusters=num_labels, metric="precomputed", linkage="average")
     model.fit(distance_matrix_train)
     y_pred = model.fit_predict(distance_matrix_train)
     return float(v_measure_score(y, y_pred))
