@@ -13,6 +13,7 @@ def validate_config(config: Configuration) -> None:
     validate_size(config["tournament_size"], "Tournament size must be greater than 0")
 
     # elitism_size can be zero (no elitism)
+    validate_size(config["tournament_size"], "Tournament size must be 0 or greater", -1)
 
     try:
         assert config["elitism_size"] < config["population_size"]
@@ -32,9 +33,9 @@ def validate_config(config: Configuration) -> None:
     validate_size(config["max_depth"], "Max depth must be greater than 0")
 
 
-def validate_size(size: int, message: str) -> None:
+def validate_size(size: int, message: str, floor: int = 0) -> None:
     try:
-        assert size > 0
+        assert size > floor
     except AssertionError:
         print(message)
         raise ValueError from AssertionError
