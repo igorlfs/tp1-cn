@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+import numpy as np
 import pandas as pd
 
 from src.crossover import crossover
@@ -14,6 +15,8 @@ from src.util import split_df_data_label
 
 
 def main() -> None:
+    if config["verbose"]:
+        print("#", config)
     dataset_path = config["dataset"].get_path()
     df_train = pd.read_csv(f"{dataset_path}train.csv")
 
@@ -29,10 +32,17 @@ def main() -> None:
         for _ in range(config["population_size"])
     ]
 
+    if config["verbose"]:
+        print("Generation,BestFit,AvgFit,WorstFit,Repetitions,ChildImproved,ChildWorsened")
+
     for i in range(config["max_generations"]):
         fitness = [evaluate_fitness(x_train, tree, y_train) for tree in population]
+        str_representations = [str(tree) for tree in population]
+        repetitions = config["population_size"] - len(set(str_representations))
 
-        print(f"G{i}: Fit Best = {max(fitness)}")
+        avg = np.average(fitness)
+        children_improved = 0
+        children_worsened = 0
 
         next_generation = elitism(population, fitness, config["elitism_size"])
 
@@ -46,12 +56,22 @@ def main() -> None:
                 j += 2
                 offspring1, offspring2 = crossover(parent1, parent2)
                 assert offspring1 is not None and offspring2 is not None
+                if evaluate_fitness(x_train, offspring1, y_train) > avg:
+                    children_improved += 1
+                else:
+                    children_worsened += 1
+
                 next_generation.extend([offspring1, offspring2])
             else:
                 tree = deepcopy(candidates[j])
                 j += 1
                 mutated = mutate_tree(tree, features)
                 next_generation.append(mutated)
+
+        if config["verbose"]:
+            print(
+                f"G{i},{max(fitness)},{avg},{min(fitness)},{repetitions},{children_improved},{children_worsened}"
+            )
 
         population = next_generation[: config["population_size"]]  # might have an extra offspring
 
@@ -61,4 +81,7 @@ def main() -> None:
     x_test, y_test = split_df_data_label(df_test)
 
     fitness_test = evaluate_fitness(x_test, best_tree, y_test)
-    print(f"Test Fitness = {fitness_test}")
+    if config["verbose"]:
+        print(f"T,{fitness_test},0,0,0,0,0")
+    else:
+        print(fitness_test)

@@ -25,6 +25,7 @@ def load_test_config() -> Configuration:
             "max_generations": int(os.environ["MAX_GENERATIONS"]),
             "max_depth": int(os.environ["MAX_DEPTH"]),
             "dataset": Datasets(os.environ["DATASET"]),
+            "verbose": bool(os.environ["VERBOSE"]),
         }
     )
 

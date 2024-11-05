@@ -96,6 +96,12 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         help="Maximum depth of tree.",
     )
     argument_parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Dump config and statistics",
+    )
+    argument_parser.add_argument(
         dest="dataset",
         type=Datasets,
         help="Either 'breast_cancer_coimbra' or 'wine_red'",

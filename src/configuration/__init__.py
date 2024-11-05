@@ -25,3 +25,4 @@ class Configuration(TypedDict):
     max_depth: int
 
     dataset: Datasets
+    verbose: bool

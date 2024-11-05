@@ -32,6 +32,7 @@
                 "30",
                 "--max-depth",
                 "7",
+                "--verbose",
                 "breast_cancer_coimbra"
             ]
         }
