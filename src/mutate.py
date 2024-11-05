@@ -3,7 +3,7 @@ import random
 from src.globals import rng
 from src.loader import config
 from src.operations import Operations
-from src.tree import OptNode, TreeNode
+from src.tree import TreeNode
 from src.tree.generate import generate_random_tree
 
 
@@ -33,34 +33,28 @@ def swap_terminal(node: TreeNode, features: list[str]) -> TreeNode:
     return TreeNode(feature, node.left, node.right)
 
 
-def mutate_node(node: OptNode, features: list[str]) -> OptNode:
-    """Mutate a node with a given probability."""
-    if node is None:
-        return None
+def mutate_node(root: TreeNode, features: list[str]) -> TreeNode:
+    """Mutate a single randomly selected node in the tree."""
+    nodes = root.traverse()
+    if not nodes:
+        return root
 
-    if rng.random() < config["mutation_prob"]:
-        if node.value in list(Operations):
-            if rng.random() < config["swap_operator_prob"]:
-                return swap_operator(node)
-            else:  # noqa: RET505
-                return mutate_operator_to_terminal(node, features)
-        else:  # noqa: PLR5501
-            if rng.random() < config["swap_terminal_prob"]:
-                return swap_terminal(node, features)
-            else:  # noqa: RET505
-                # TODO there must a better way to keep it shallow
-                return generate_random_tree(features, max_depth=2)  # Keep it shallow
+    target_node = random.choice(nodes)
 
-    node.left = mutate_node(node.left, features)
-    node.right = mutate_node(node.right, features)
-
-    return node
-
-
-def mutate_tree(tree: TreeNode, features: list[str]) -> TreeNode:
-    """Perform mutation on the entire tree."""
-    mutated_tree = mutate_node(tree, features)
-
-    assert mutated_tree is not None
-
-    return mutated_tree
+    if target_node.value in list(Operations):
+        if random.random() < config["swap_operator_prob"]:
+            return swap_operator(target_node)
+        else:  # noqa: RET505
+            return mutate_operator_to_terminal(target_node, features)
+    else:  # noqa: PLR5501
+        if random.random() < config["swap_terminal_prob"]:
+            return swap_terminal(target_node, features)
+        else:  # noqa: RET505
+            # Keep the generated tree shallow
+            return generate_random_tree(
+                features,
+                # The max_depth must be at least 1
+                # The subtraction may be 0, if the target_node is one of the deepest leaves
+                max(config["max_depth"] - target_node.depth(), 1),
+                target_node.parent,
+            )

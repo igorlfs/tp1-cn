@@ -22,7 +22,7 @@ def main() -> None:
     features.pop()
 
     population = [
-        generate_random_tree(features, config["max_depth"])
+        generate_random_tree(features, config["max_depth"], None)
         for _ in range(config["population_size"])
     ]
 

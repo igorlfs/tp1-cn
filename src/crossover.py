@@ -27,4 +27,5 @@ def replace_node(tree: OptNode, old_node: OptNode, new_node: OptNode) -> OptNode
         tree.value,
         replace_node(tree.left, old_node, new_node),
         replace_node(tree.right, old_node, new_node),
+        new_node.parent if new_node is not None else None,
     )

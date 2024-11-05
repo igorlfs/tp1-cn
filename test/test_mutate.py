@@ -22,7 +22,7 @@ def test_mutate_operator_to_terminal() -> None:
     actual_tree = mutate_operator_to_terminal(tree, ["foo"])
 
     assert actual_tree.value == "foo"
-    assert actual_tree.depth() == 1
+    assert actual_tree.height() == 1
 
 
 def test_cant_mutate_operator_to_terminal_with_terminal() -> None:

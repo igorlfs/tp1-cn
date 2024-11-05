@@ -6,11 +6,16 @@ from src.operations import Operations
 
 class TreeNode:
     def __init__(
-        self, value: str | Operations, left: None | TreeNode = None, right: None | TreeNode = None
+        self,
+        value: str | Operations,
+        left: None | TreeNode = None,
+        right: None | TreeNode = None,
+        parent: TreeNode | None = None,
     ) -> None:
         self.value = value
         self.left = left
         self.right = right
+        self.parent = parent
 
     def __repr__(self) -> str:
         if self.left is None and self.right is None:
@@ -50,10 +55,14 @@ class TreeNode:
             case _:
                 raise NotImplementedError
 
-    # TODO We could limit the MAX_DEPTH by using this property
     def depth(self) -> int:
-        left_depth = self.left.depth() if self.left else 0
-        right_depth = self.right.depth() if self.right else 0
+        if self.parent is None:
+            return 1
+        return self.parent.depth() + 1
+
+    def height(self) -> int:
+        left_depth = self.left.height() if self.left else 0
+        right_depth = self.right.height() if self.right else 0
         return max(left_depth, right_depth) + 1
 
     def _traverse(self, nodes: list[TreeNode]) -> list[TreeNode]:
