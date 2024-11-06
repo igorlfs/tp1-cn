@@ -72,3 +72,65 @@ def test_traverse() -> None:
     assert str(nodes[0]) == "(foo + foo)"
     assert str(nodes[1]) == "foo"
     assert str(nodes[2]) == "foo"
+
+
+@pytest.fixture
+def complex_tree() -> TreeNode:
+    foo = TreeNode("foo")
+    bar = TreeNode("bar")
+    biz = TreeNode("biz")
+    buz = TreeNode("buz")
+    sus = TreeNode("sus")
+
+    mul_node = TreeNode("*", left=buz, right=sus)
+    buz.parent = mul_node
+    sus.parent = mul_node
+
+    plus_node = TreeNode("+", left=biz, right=mul_node)
+    biz.parent = plus_node
+    mul_node.parent = plus_node
+
+    minus_node = TreeNode("-", left=bar, right=plus_node)
+    bar.parent = minus_node
+    plus_node.parent = minus_node
+
+    root = TreeNode("/", left=foo, right=minus_node)
+    foo.parent = root
+    minus_node.parent = root
+
+    return root
+
+
+def test_depth_height_root(complex_tree: TreeNode) -> None:
+    assert complex_tree.depth() == 0
+    assert complex_tree.height() == 4  # noqa: PLR2004
+
+
+def test_depth_height_leaf_deep(complex_tree: TreeNode) -> None:
+    assert complex_tree.right
+    assert complex_tree.right.right
+    assert complex_tree.right.right.right
+    assert complex_tree.right.right.right.right
+    assert complex_tree.right.right.right.right.depth() == 4  # noqa: PLR2004
+    assert complex_tree.right.right.right.right.height() == 0
+
+
+def test_depth_height_leaf_shallow(complex_tree: TreeNode) -> None:
+    assert complex_tree.left
+    assert complex_tree.left.depth() == 1
+    assert complex_tree.left.height() == 0
+
+
+def test_depth_height_leaf_intermediate(complex_tree: TreeNode) -> None:
+    assert complex_tree.right
+    assert complex_tree.right.right
+    assert complex_tree.right.right.left
+    assert complex_tree.right.right.left.depth() == 3  # noqa: PLR2004
+    assert complex_tree.right.right.left.height() == 0
+
+
+def test_depth_height_node(complex_tree: TreeNode) -> None:
+    assert complex_tree.right
+    assert complex_tree.right.right
+    assert complex_tree.right.right.depth() == 2  # noqa: PLR2004
+    assert complex_tree.right.right.height() == 2  # noqa: PLR2004

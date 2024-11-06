@@ -57,13 +57,17 @@ class TreeNode:
 
     def depth(self) -> int:
         if self.parent is None:
-            return 1
+            return 0
         return self.parent.depth() + 1
 
-    def height(self) -> int:
-        left_depth = self.left.height() if self.left else 0
-        right_depth = self.right.height() if self.right else 0
+    def _height(self) -> int:
+        left_depth = self.left._height() if self.left else 0
+        right_depth = self.right._height() if self.right else 0
         return max(left_depth, right_depth) + 1
+
+    def height(self) -> int:
+        """Wrapper for height because, by default, it considers `None` nodes as leaves."""
+        return self._height() - 1
 
     def _traverse(self, nodes: list[TreeNode]) -> list[TreeNode]:
         if self is not None:
