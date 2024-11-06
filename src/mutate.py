@@ -48,8 +48,7 @@ def mutate_node(node: TreeNode, features: list[str]) -> None:
                 features,
                 # Keep the generated tree shallow
                 # The max_depth must be at least 1
-                # The subtraction may be 0, if the selected_node is one of the deepest leaves
-                max(config["max_depth"] - node.depth(), 1),
+                config["max_depth"] - node.depth(),
                 node.parent,
             )
 
