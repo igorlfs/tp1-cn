@@ -33,28 +33,35 @@ def swap_terminal(node: TreeNode, features: list[str]) -> TreeNode:
     return TreeNode(feature, node.left, node.right)
 
 
-def mutate_node(root: TreeNode, features: list[str]) -> TreeNode:
-    """Mutate a single randomly selected node in the tree."""
-    nodes = root.traverse()
-    if not nodes:
-        return root
-
-    target_node = random.choice(nodes)
-
-    if target_node.value in list(Operations):
+def mutate_node(node: TreeNode, features: list[str]) -> None:
+    """Mutate node in-place."""
+    if node.value in list(Operations):
         if random.random() < config["swap_operator_prob"]:
-            return swap_operator(target_node)
-        else:  # noqa: RET505
-            return mutate_operator_to_terminal(target_node, features)
+            new_node = swap_operator(node)
+        else:
+            new_node = mutate_operator_to_terminal(node, features)
     else:  # noqa: PLR5501
         if random.random() < config["swap_terminal_prob"]:
-            return swap_terminal(target_node, features)
-        else:  # noqa: RET505
-            # Keep the generated tree shallow
-            return generate_random_tree(
+            new_node = swap_terminal(node, features)
+        else:
+            new_node = generate_random_tree(
                 features,
+                # Keep the generated tree shallow
                 # The max_depth must be at least 1
-                # The subtraction may be 0, if the target_node is one of the deepest leaves
-                max(config["max_depth"] - target_node.depth(), 1),
-                target_node.parent,
+                # The subtraction may be 0, if the selected_node is one of the deepest leaves
+                max(config["max_depth"] - node.depth(), 1),
+                node.parent,
             )
+
+    node.value = new_node.value
+    node.left = new_node.left
+    node.right = new_node.right
+
+
+def mutate(root: TreeNode, features: list[str]) -> None:
+    """Mutate a single randomly selected node in the tree."""
+    nodes = root.traverse()
+
+    node = random.choice(nodes)
+
+    mutate_node(node, features)

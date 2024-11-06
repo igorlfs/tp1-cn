@@ -9,7 +9,7 @@ from src.elitism import elitism
 from src.evaluate import evaluate_fitness
 from src.globals import rng
 from src.loader import config
-from src.mutate import mutate_tree
+from src.mutate import mutate
 from src.select import select_population
 from src.tree import TreeNode
 
@@ -67,8 +67,8 @@ def evolution_loop(
             else:
                 tree = deepcopy(candidates[j])
                 j += 1
-                mutated = mutate_tree(tree, features)
-                next_generation.append(mutated)
+                mutate(tree, features)
+                next_generation.append(tree)
 
         if config["verbose"]:
             print(
