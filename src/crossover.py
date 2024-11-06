@@ -3,11 +3,11 @@ import random
 from src.tree import OptNode, TreeNode
 
 
-def crossover(tree1: OptNode, tree2: OptNode) -> tuple[OptNode, OptNode]:
+def crossover(tree1: TreeNode, tree2: TreeNode) -> tuple[OptNode, OptNode]:
     """Perform crossover between two trees."""
 
-    node1 = random.choice(tree1.traverse()) if tree1 else None
-    node2 = random.choice(tree2.traverse()) if tree2 else None
+    node1 = random.choice(tree1.traverse())
+    node2 = random.choice(tree2.traverse())
 
     new_tree1 = replace_node(tree1, node1, node2)
     new_tree2 = replace_node(tree2, node2, node1)
