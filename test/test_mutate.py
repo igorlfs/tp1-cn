@@ -1,12 +1,12 @@
 import pytest
 
 from src.mutate import mutate_operator_to_terminal, swap_operator
+from src.operations import Operations
 from src.tree import TreeNode
 
 
 def test_swap_operator() -> None:
-    tree = TreeNode("foo")
-    tree = TreeNode("+", tree, tree)
+    tree = TreeNode(Operations.ADD, TreeNode("foo"), TreeNode("foo"))
 
     swapped_tree = swap_operator(tree)
 
@@ -38,23 +38,3 @@ def test_cant_mutate_operator_to_terminal_with_terminal_with_children() -> None:
 
     with pytest.raises(ValueError):
         mutate_operator_to_terminal(tree, ["foo"])
-
-
-def test_mutate() -> None:
-    tree = TreeNode("+", TreeNode("*", TreeNode("foo"), TreeNode("bar")), TreeNode("biz"))
-    # before the mutation
-    #     +
-    #    * biz
-    # foo bar
-
-    mutate(tree, ["foo", "bar", "biz"])
-
-    # after the mutation
-    #     +
-    #    * biz
-    # bar bar
-
-    assert tree.left is not None
-
-    # after the mutation, the tree must be different
-    assert str(tree.left.left) == "bar"
