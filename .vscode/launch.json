@@ -14,8 +14,6 @@
                 "123456",
                 "--leaf-probability",
                 "0.1",
-                "--mutation-probability",
-                "0.1",
                 "--swap-terminal-prob",
                 "0.4",
                 "--swap-operator-probability",

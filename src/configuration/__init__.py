@@ -12,7 +12,6 @@ class Configuration(TypedDict):
     seed: Final[int]
 
     leaf_prob: float
-    mutation_prob: float
     swap_terminal_prob: float
     swap_operator_prob: float
     crossover_prob: float

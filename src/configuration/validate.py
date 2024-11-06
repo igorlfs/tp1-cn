@@ -4,7 +4,6 @@ from src.configuration import Configuration
 def validate_config(config: Configuration) -> None:
     """Check if probabilities and sizes from config are valid."""
     validate_probaility(config["leaf_prob"], "Leaf")
-    validate_probaility(config["mutation_prob"], "Mutation")
     validate_probaility(config["swap_terminal_prob"], "Swap Terminal")
     validate_probaility(config["swap_operator_prob"], "Swap Operator")
     validate_probaility(config["crossover_prob"], "Crossover")

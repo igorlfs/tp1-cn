@@ -24,14 +24,6 @@ def define_arguments(argument_parser: ArgumentParser) -> None:
         help="Probability of generating a leaf when creating a random tree.",
     )
     argument_parser.add_argument(
-        "-m",
-        "--mutation-probability",
-        dest="mutation_prob",
-        required=True,
-        type=float,
-        help="Probability of mutating each node when traversing the tree.",
-    )
-    argument_parser.add_argument(
         "-st",
         "--swap-terminal-probability",
         dest="swap_terminal_prob",
