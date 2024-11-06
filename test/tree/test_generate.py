@@ -1,9 +1,8 @@
 from src.tree.generate import generate_random_tree
 
-MAX_DEPTH = 5
-
 
 def test_generate_tree_depth() -> None:
-    tree = generate_random_tree(["foo", "bar"], MAX_DEPTH, None)
+    for _ in range(100):
+        tree = generate_random_tree(["foo", "bar"], 5, None)
 
-    assert tree.depth() <= MAX_DEPTH
+        assert tree.height() < 5  # noqa: PLR2004
