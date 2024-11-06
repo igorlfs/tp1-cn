@@ -53,6 +53,10 @@ def evolution_loop(
 
                 assert offspring1 is not None and offspring2 is not None
 
+                if rng.random() >= config["crossover_prob"]:
+                    mutate(offspring1, features)
+                    mutate(offspring2, features)
+
                 if evaluate_fitness(x_train, offspring1, y_train, num_labels) > avg_parents:
                     children_improved += 1
                 else:
