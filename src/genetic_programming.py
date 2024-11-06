@@ -10,7 +10,7 @@ from src.evaluate import evaluate_fitness
 from src.globals import rng
 from src.loader import config
 from src.mutate import mutate
-from src.select import select_population
+from src.select import select
 from src.tree import TreeNode
 
 
@@ -37,7 +37,7 @@ def evolution_loop(
 
         next_generation = elitism(population, fitness, config["elitism_size"])
 
-        candidates = select_population(population, fitness)
+        candidates = select(population, fitness)
 
         j = 0
         while len(next_generation) < config["population_size"]:

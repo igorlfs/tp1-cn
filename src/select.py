@@ -3,7 +3,7 @@ from src.loader import config
 from src.tree import TreeNode
 
 
-def select_population(
+def select(
     population: list[TreeNode],
     fitness: list[float],
 ) -> list[TreeNode]:
