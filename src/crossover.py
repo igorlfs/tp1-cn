@@ -1,13 +1,26 @@
 import random
 
+from src.loader import config
 from src.tree import OptNode, TreeNode
 
 
 def crossover(tree1: TreeNode, tree2: TreeNode) -> tuple[OptNode, OptNode]:
     """Perform crossover between two trees."""
 
-    node1 = random.choice(tree1.traverse())
-    node2 = random.choice(tree2.traverse())
+    traversal1, traversal2 = tree1.traverse(), tree2.traverse()
+
+    node1, node2 = random.choice(traversal1), random.choice(traversal2)
+
+    # We have to assure the newly generated trees don't exceed the max depth
+    # To check that, for each tree we look at its depth, which is
+    # what is above in tree A + what is below tree B is less than the configured max_depth
+    # the sum can't be equal either, since it only counts the edges (and excludes None nodes)
+    while (
+        node1.depth() + node2.height() >= config["max_depth"]
+        or node1.height() + node2.depth() >= config["max_depth"]
+    ):
+        node1 = random.choice(traversal1)
+        node2 = random.choice(traversal2)
 
     new_tree1 = replace_node(tree1, node1, node2)
     new_tree2 = replace_node(tree2, node2, node1)
