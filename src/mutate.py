@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 
 from src.globals import rng
 from src.loader import config
@@ -21,7 +22,12 @@ def mutate_operator_to_terminal(node: TreeNode, features: list[str]) -> TreeNode
 
 def swap_operator(node: TreeNode) -> TreeNode:
     """Update the node's value with a random Operation. `node` must be an Operator."""
-    operator = random.choice(list(Operations))
+    assert isinstance(node.value, Operations)
+
+    operations = list(Operations)
+    operations.remove(node.value)  # force changing the operator
+    operator = random.choice(operations)
+
     return TreeNode(operator, node.left, node.right)
 
 
@@ -29,8 +35,11 @@ def swap_terminal(node: TreeNode, features: list[str]) -> TreeNode:
     """Update the node's value with a random feature. `node` must be a Terminal."""
     assert node.left is None and node.right is None
 
-    feature = rng.choice(features)
-    return TreeNode(feature, node.left, node.right)
+    eligible_features = deepcopy(features)
+    eligible_features.remove(node.value)  # force changing the terminal
+    feature = rng.choice(eligible_features)
+
+    return TreeNode(feature)
 
 
 def mutate_node(node: TreeNode, features: list[str]) -> None:
