@@ -43,4 +43,4 @@ sns.lineplot(data=all_data, x="Generation", y="WorstFit", color="r", label="Wors
 plt.title(f"Fitness for {ATTRIBUTE} = {ATTRIBUTE_VALUE} ({ITERATIONS} iterations)")
 plt.xlabel("Generation")
 plt.ylabel("Fitness")
-plt.savefig(f"{SAVE_DIR}/{ATTRIBUTE_VALUE}-{ATTRIBUTE}-median-fitness.png")
+plt.savefig(f"{SAVE_DIR}/{ATTRIBUTE_VALUE}-{ATTRIBUTE}-mean-fitness.png")
