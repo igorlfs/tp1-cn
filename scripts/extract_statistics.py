@@ -1,6 +1,5 @@
 import pandas as pd
-
-from .config import load_config_from_args
+from config import load_config_from_args
 
 SAVE_DIR = "./assets/statistics"
 
