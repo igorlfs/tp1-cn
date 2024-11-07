@@ -21,13 +21,12 @@ def evolution_loop(
     num_labels: int,
     features: list[str],
 ) -> tuple[list[TreeNode], list[float]]:
-    fitness = []  # avoid type error that fitness isn't initialized
+    fitness = [evaluate_fitness(x_train, tree, y_train, num_labels) for tree in population]
 
     if config["verbose"]:
         print("Generation,BestFit,AvgFit,WorstFit,Repetitions,ChildImproved,ChildWorsened")
 
     for i in range(config["max_generations"]):
-        fitness = [evaluate_fitness(x_train, tree, y_train, num_labels) for tree in population]
         str_representations = [str(tree) for tree in population]
         repetitions = config["population_size"] - len(set(str_representations))
 
@@ -35,7 +34,7 @@ def evolution_loop(
         children_improved = 0
         children_worsened = 0
 
-        next_generation = elitism(population, fitness, config["elitism_size"])
+        next_generation, next_fitness = elitism(population, fitness, config["elitism_size"])
 
         candidates = select(population, fitness)
 
@@ -45,29 +44,43 @@ def evolution_loop(
                 parent1 = deepcopy(candidates[j])
                 parent2 = deepcopy(candidates[j + 1])
 
-                avg_parents = 0.5 * (fitness[j] + fitness[j + 1])
-
-                j += 2
+                avg_fitness_parents = 0.5 * (fitness[j] + fitness[j + 1])
 
                 offspring1, offspring2 = crossover(parent1, parent2)
 
                 assert offspring1 is not None and offspring2 is not None
 
-                if evaluate_fitness(x_train, offspring1, y_train, num_labels) > avg_parents:
+                next_fitness.append(evaluate_fitness(x_train, offspring1, y_train, num_labels))
+
+                if next_fitness[-1] > avg_fitness_parents:
                     children_improved += 1
                 else:
                     children_worsened += 1
 
-                if evaluate_fitness(x_train, offspring2, y_train, num_labels) > avg_parents:
+                next_fitness.append(evaluate_fitness(x_train, offspring2, y_train, num_labels))
+
+                if next_fitness[-1] > avg_fitness_parents:
                     children_improved += 1
                 else:
                     children_worsened += 1
+
+                j += 2
 
                 next_generation.extend([offspring1, offspring2])
             else:
                 tree = deepcopy(candidates[j])
-                j += 1
+
                 mutate(tree, features)
+
+                next_fitness.append(evaluate_fitness(x_train, tree, y_train, num_labels))
+
+                if next_fitness[-1] > fitness[j]:
+                    children_improved += 1
+                else:
+                    children_worsened += 1
+
+                j += 1
+
                 next_generation.append(tree)
 
         if config["verbose"]:
@@ -76,5 +89,6 @@ def evolution_loop(
             )
 
         population = next_generation[: config["population_size"]]  # might have an extra offspring
+        fitness = next_fitness[: config["population_size"]]
 
     return population, fitness
