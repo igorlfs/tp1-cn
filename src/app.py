@@ -33,7 +33,8 @@ def main() -> None:
     df_test = pd.read_csv(f"{dataset_path}test.csv")
     x_test, y_test, _ = split_df_data_label(df_test)
 
-    fitness_test = evaluate_fitness(x_test, best_tree, y_test, num_labels)
+    df_test_dict: list[dict[str, float]] = [row.to_dict() for _, row in x_test.iterrows()]
+    fitness_test = evaluate_fitness(df_test_dict, best_tree, y_test, num_labels)
 
     if config["verbose"]:
         print(f"T,{fitness_test},0,0,0,0,0")

@@ -21,7 +21,9 @@ def evolution_loop(
     num_labels: int,
     features: list[str],
 ) -> tuple[list[TreeNode], list[float]]:
-    fitness = [evaluate_fitness(x_train, tree, y_train, num_labels) for tree in population]
+    df_dict: list[dict[str, float]] = [row.to_dict() for _, row in x_train.iterrows()]
+
+    fitness = [evaluate_fitness(df_dict, tree, y_train, num_labels) for tree in population]
 
     if config["verbose"]:
         print("Generation,BestFit,AvgFit,WorstFit,Repetitions,ChildImproved,ChildWorsened")
@@ -50,14 +52,14 @@ def evolution_loop(
 
                 assert offspring1 is not None and offspring2 is not None
 
-                next_fitness.append(evaluate_fitness(x_train, offspring1, y_train, num_labels))
+                next_fitness.append(evaluate_fitness(df_dict, offspring1, y_train, num_labels))
 
                 if next_fitness[-1] > avg_fitness_parents:
                     children_improved += 1
                 else:
                     children_worsened += 1
 
-                next_fitness.append(evaluate_fitness(x_train, offspring2, y_train, num_labels))
+                next_fitness.append(evaluate_fitness(df_dict, offspring2, y_train, num_labels))
 
                 if next_fitness[-1] > avg_fitness_parents:
                     children_improved += 1
@@ -72,7 +74,7 @@ def evolution_loop(
 
                 mutate(tree, features)
 
-                next_fitness.append(evaluate_fitness(x_train, tree, y_train, num_labels))
+                next_fitness.append(evaluate_fitness(df_dict, tree, y_train, num_labels))
 
                 if next_fitness[-1] > fitness[j]:
                     children_improved += 1

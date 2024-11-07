@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from numba import jit
 from numpy.typing import NDArray
 from sklearn.cluster import AgglomerativeClustering
@@ -8,8 +7,10 @@ from sklearn.metrics.cluster import v_measure_score
 from src.tree import TreeNode
 
 
-def evaluate_fitness(x: pd.DataFrame, tree: TreeNode, y: NDArray, num_labels: int) -> float:
-    evaluations = [tree.evaluate(row.to_dict()) for _, row in x.iterrows()]
+def evaluate_fitness(
+    df_dict: list[dict[str, float]], tree: TreeNode, y: NDArray, num_labels: int
+) -> float:
+    evaluations = [tree.evaluate(row) for row in df_dict]
     distance_matrix_train = _get_distance_matrix(len(evaluations), evaluations)
     model = AgglomerativeClustering(n_clusters=num_labels, metric="precomputed", linkage="average")
     model.fit(distance_matrix_train)
