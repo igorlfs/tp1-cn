@@ -2,7 +2,7 @@
 
 set NUMBER_OF_REPETITIONS 10
 
-set DEFAULT_ARGS --leaf-probability 0.1 --swap-terminal-prob 0.4 --swap-operator-probability 0.4 --crossover-probability 0.5 --tournament-size 2 --elitism-size 1 --max-generations 100 --max-depth 7 --verbose breast_cancer_coimbra
+set DEFAULT_ARGS --leaf-probability 0.1 --swap-terminal-probability 0.5 --swap-operator-probability 0.5 --crossover-probability 0.9 --mutation-probability 0.05 --tournament-size 2 --elitism-size 1 --max-generations 100 --max-depth 7 --verbose breast_cancer_coimbra
 
 set LOG_DIR "./dumps"
 

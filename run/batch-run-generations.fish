@@ -2,7 +2,7 @@
 
 set NUMBER_OF_REPETITIONS 10
 
-set DEFAULT_ARGS --leaf-probability 0.1 --swap-terminal-prob 0.4 --swap-operator-probability 0.4 --crossover-probability 0.5 --tournament-size 2 --elitism-size 1 --population-size 100 --max-depth 7 --verbose breast_cancer_coimbra
+set DEFAULT_ARGS --leaf-probability 0.1 --swap-terminal-probability 0.5 --swap-operator-probability 0.5 --crossover-probability 0.9 --mutation-probability 0.05 --tournament-size 2 --elitism-size 1 --population-size 100 --max-depth 7 --verbose breast_cancer_coimbra
 
 set LOG_DIR "./dumps"
 
@@ -15,7 +15,7 @@ random $SHELL_SEED
 set SEED_MIN 100000
 set SEED_MAX 999999
 
-for i in 30 50
+for i in 30 50 100
     for j in (seq 1 $NUMBER_OF_REPETITIONS)
         set SEED (random $SEED_MIN $SEED_MAX)
         set ARGS $DEFAULT_ARGS --max-generations $i --seed $SEED
