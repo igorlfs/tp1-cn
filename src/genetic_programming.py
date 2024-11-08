@@ -42,55 +42,50 @@ def evolution_loop(
 
         j = 0
         while len(next_generation) < config["population_size"]:
-            if rng.random() < config["crossover_prob"]:
-                parent1 = deepcopy(candidates[j])
-                parent2 = deepcopy(candidates[j + 1])
+            parent1 = deepcopy(candidates[j])
+            parent2 = deepcopy(candidates[j + 1])
 
-                avg_fitness_parents = 0.5 * (fitness[j] + fitness[j + 1])
+            avg_fitness_parents = 0.5 * (fitness[j] + fitness[j + 1])
 
-                offspring1, offspring2 = crossover(parent1, parent2)
+            crossover_happens = rng.random() < config["crossover_prob"]
 
-                assert offspring1 is not None and offspring2 is not None
+            child1, child2 = crossover_happens and crossover(parent1, parent2) or [parent1, parent2]
 
-                next_fitness.append(evaluate_fitness(df_dict, offspring1, y_train, num_labels))
+            assert child1 is not None and child2 is not None
 
-                if next_fitness[-1] > avg_fitness_parents:
-                    children_improved += 1
-                else:
-                    children_worsened += 1
+            if rng.random() < config["mutation_prob"]:
+                mutate(child1, features)
 
-                next_fitness.append(evaluate_fitness(df_dict, offspring2, y_train, num_labels))
+            next_fitness.append(evaluate_fitness(df_dict, child1, y_train, num_labels))
+            next_generation.append(child1)
 
-                if next_fitness[-1] > avg_fitness_parents:
-                    children_improved += 1
-                else:
-                    children_worsened += 1
-
-                j += 2
-
-                next_generation.extend([offspring1, offspring2])
+            # only consider the current parent if using only mutation
+            if next_fitness[-1] > (crossover_happens and avg_fitness_parents or fitness[j]):
+                children_improved += 1
             else:
-                tree = deepcopy(candidates[j])
+                children_worsened += 1
 
-                mutate(tree, features)
+            # if the last operation is a crossover, don't append the last child
+            if len(next_generation) < config["population_size"]:
+                if rng.random() < config["mutation_prob"]:
+                    mutate(child2, features)
 
-                next_fitness.append(evaluate_fitness(df_dict, tree, y_train, num_labels))
+                next_fitness.append(evaluate_fitness(df_dict, child2, y_train, num_labels))
+                next_generation.append(child2)
 
-                if next_fitness[-1] > fitness[j]:
+                if next_fitness[-1] > (crossover_happens and avg_fitness_parents or fitness[j + 1]):
                     children_improved += 1
                 else:
                     children_worsened += 1
 
-                j += 1
-
-                next_generation.append(tree)
+            j += 2
 
         if config["verbose"]:
             print(
                 f"G{i},{max(fitness)},{avg},{min(fitness)},{repetitions},{children_improved},{children_worsened}"
             )
 
-        population = next_generation[: config["population_size"]]  # might have an extra offspring
-        fitness = next_fitness[: config["population_size"]]
+        population = next_generation
+        fitness = next_fitness
 
     return population, fitness
