@@ -8,11 +8,13 @@ dependencies = [
     "coverage>=7.6.4",
     "graphviz>=0.20.3",
     "ipykernel>=6.29.5",
+    "matplotlib>=3.9.2",
     "numba>=0.60.0",
     "pandas>=2.2.3",
     "pytest>=8.3.3",
     "python-dotenv>=1.0.1",
     "scikit-learn>=1.5.2",
+    "seaborn>=0.13.2",
 ]
 
 [tool.basedpyright]
