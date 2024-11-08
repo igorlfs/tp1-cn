@@ -15,6 +15,7 @@ def load_test_config() -> Configuration:
         {
             "seed": int(os.environ["SEED"]),
             "leaf_prob": float(os.environ["LEAF_PROBABILITY"]),
+            "mutation_prob": float(os.environ["MUTATION_PROBABILITY"]),
             "swap_terminal_prob": float(os.environ["SWAP_TERMINAL_PROBABILITY"]),
             "swap_operator_prob": float(os.environ["SWAP_OPERATOR_PROBABILITY"]),
             "crossover_prob": float(os.environ["CROSSOVER_PROBABILITY"]),
