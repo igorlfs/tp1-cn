@@ -129,33 +129,66 @@ Como definido na especificação, o método de seleção foi o torneio. A única
 
 === Operadores Genéticos <op-gen>
 
-==== Cruzamento
+Foram implementados implementados os dois operadores genéticos tradicionais: cruzamento e mutação (possuindo 4 variantes). Como existem probabilidades associadas a essas operações, é possível que nenhuma delas aconteça e os indivíduos selecionados apenas sejam inseridos novamente na população (também é possível que ambas aconteçam).
 
-O cruzamento implementado seleciona um nó de cada árvore e faz a troca. Como a árvore é bem simples, não é necessário preocupação com a propriedade de fechamento. O único invariante que deve ser respeitado é a profundidade da árvore, que deve ser menor que o tamanho máximo do indivíduo. Para checar isso, as funções auxiliares mencionadas em @repr são usadas. Mais especificamente, confere-se se a soma da altura de nó com a profundidade do outro excede o limite. Como a árvore binária possui um nó para indicar o pai, certo cuidado é tomado para realizar corretamente a troca.
+==== Cruzamento <cru>
 
-As figuras a seguir, geradas com base na representação do Graphviz (ver @repr), ilustram um exemplo de cruzamento. Nelas, os nós destacados de vermelho indicam a troca.
+O cruzamento implementado seleciona um nó de cada árvore e faz a troca. Como a árvore é bem simples, não é necessário preocupação com a propriedade de fechamento. O único invariante que deve ser respeitado é a profundidade das árvores, que deve ser menor que o tamanho máximo do indivíduo. Para checar isso, as funções auxiliares mencionadas na @repr são usadas. Mais especificamente, confere-se se a soma da altura de um nó com a profundidade do outro excede o limite. Como a árvore binária possui um nó para indicar o pai, certo cuidado é tomado para realizar corretamente a troca.
+
+As figuras a seguir#footnote()[O exemplo foi didático (isto é, só troca folhas) para que as imagens não ocupassem muito espaço.], geradas com base na representação do Graphviz (ver @repr), ilustram um exemplo de cruzamento. Nelas, os nós destacados de vermelho indicam a troca.
 
 #figure(
-  image("figs/crossover/parent1.png", width: 80%),
-  caption: [Pai 1],
+  image("figs/crossover/parent1.png", width: 70%),
+  caption: [Cruzamento -- Pai 1],
 )
 
 #figure(
-  image("figs/crossover/parent2.png", width: 80%),
-  caption: [Pai 2],
+  image("figs/crossover/parent2.png", width: 75%),
+  caption: [Cruzamento -- Pai 2],
 )
 
 #figure(
-  image("figs/crossover/child1.png", width: 80%),
-  caption: [Filho 1],
+  image("figs/crossover/child1.png", width: 75%),
+  caption: [Cruzamento -- Filho 1],
 )
 
 #figure(
-  image("figs/crossover/child2.png", width: 80%),
-  caption: [Filho 2],
+  image("figs/crossover/child2.png", width: 75%),
+  caption: [Cruzamento -- Filho 2],
 )
 
-==== Mutação
+==== Mutação <mut>
+
+A mutação consiste na seleção e troca de apenas um nó da árvore gerada. Como comentado no início da seção, existem 4 variantes: duas ocorrem apenas para nós terminais, enquanto as outras duas apenas para operadores. Ambos os tipos de nós podem ser trocados por outro nó do tipo correspondente. Ou seja, a primeira variante é a troca de um operador por outro e a segunda variante é uma troca de um terminal por outro. É garantido que haverá troca, pois o nó correspondente é excluído da _pool_ de seleção.
+
+As outras variantes são: um terminal pode ser expandido em uma nova árvore e um operador pode ser reduzido para um único terminal. Para escolher qual mutação será aplicada a um dado nó, primeiro checa-se se o nó é um operador ou terminal e, em seguida, os parâmetros `--swap-terminal-probability` e `--swap-operator-probability` escolhem entre a troca "comum" ou a variante "especial". Como no caso do cruzamento, o único invariante que pode causar problemas é a altura máxima do indivíduo, que é checada quando a expansão é escolhida: a altura da nova nova árvore é, no máximo, a altura máxima menos a profundidade do nó selecionado. A seguir, as figuras ilustram os diferentes tipos de mutação:
+
+#figure(
+  image("figs/mutation/init.png", width: 70%),
+  caption: [Mutação -- Árvore Inicial],
+)
+
+#figure(
+  image("figs/mutation/op-swap.png", width: 70%),
+  caption: [Mutação -- Troca de Operador],
+)
+
+#figure(
+  image("figs/mutation/reduction.png", width: 60%),
+  caption: [Mutação -- Redução de Operador],
+)
+
+#figure(
+  image("figs/mutation/ter-swap.png", width: 70%),
+  caption: [Mutação -- Troca de Terminal],
+) <mtt>
+
+#figure(
+  image("figs/mutation/expansion.png", width: 70%),
+  caption: [Mutação -- Expansão de Subárvore],
+) <mes>
+
+Como o tamanho máximo do indivíduo foi limitado a 3 na geração destas figuras, a @mtt e a @mes demonstram uma grande similaridade, uma vez que a expansão da subárvore foi limitada a apenas um nó. Apesar do ganho em explorabilidade, a diversidade da mutação possui o custo de introduzir dois novos parâmetros.
 
 === Fitness
 
