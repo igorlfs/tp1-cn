@@ -200,6 +200,61 @@ O cálculo da _fitness_ funciona da seguinte maneira: primeiro, as avaliações 
 // Análise do impacto dos parâmetros no resultado obtido pelo AE.
 = Experimentos <exp>
 
+O roteiro de experimentação foi baseado no guia geral da especificação e é sumarizado aqui. Todos os dados gerados na execução dos experimentos se encontram no diretório `./dumps`, como apontado na @est. Além disso, os experimentos são reprodutíveis, uma vez que a semente aleatória é um parâmetro não somente do próprio programa, como também dos _scripts_ de execução (em `./run`). Ainda, quando a _flag_ de verbosidade está habilitada, é possível recuperar todos os parâmetros de uma dada execução, pois esse artefato é registrado (e também está presente nos _dumps_).
+
+Cada combinação de parâmetros foi repetida 10 vezes e todos os experimentos foram realizados a partir da modificação de apenas um parâmetro por vez. São analisados, principalmente, os gráficos da evolução da _fitness_ (com melhor, média e pior), da quantidade de repetições e do desempenho dos filhos (quantidade melhorada ou não). A escolha dos parâmetros foi feita de forma iterativa: o primeiro parâmetro foi escolhido e fixado, depois o segundo e assim por diante. Uma análise mais detalhada, mas incompatível com o tempo proposto, seria retroativamente tunar os parâmetros: por exemplo, ao definir o terceiro parâmetro, checar se os anteriores ainda são os melhores.
+
+Os experimentos foram realizados na base de câncer de mama. Como referência, usando-se a distância euclidiana, a Métrica V tem valor igual a, aproximadamente, 0.1256 neste conjunto de dados. Nesta seção, $|N|$ é usado para se referir ao tamanho da população, $|G|$ ao número de gerações e $|T|$ ao tamanho do torneio.
+
+Esta seção está dividida da seguinte maneira: a @pop-and-gen relata a escolha dos tamanho da população e o número de gerações, a
+
+== Tamanho da População e Número de Gerações <pop-and-gen>
+
+Primeiramente, foi decidido o tamanho da população, considerando as opções propostas no guia: *30*, *50*, *100* e *500*. Na rodada inicial, o restante dos parâmetros também foi baseado no guia, exceto os parâmetros adicionais do programa, que foram escolhidos arbitrariamente. Para um aprofundamento maior em quais foram os parâmetros inciais, recomenda-se verificar os registros nos _dumps_. A única diferença notável foi o número de gerações, que foi configurado como *100*. A partir dos registros dessa primeira etapa, foram construídos os gráficos a seguir. A média das repetições é destacada, enquanto a região mais clara é o intervalo de 95% de confiança.
+
+#figure(
+  image("figs/experiments/30-population-mean-fitness.png"),
+  caption: [Evolução da _fitness_, $|N| = 30$],
+) <pop-30>
+
+#figure(
+  image("figs/experiments/50-population-mean-fitness.png"),
+  caption: [Evolução da _fitness_, $|N| = 50$],
+) <pop-50>
+
+#figure(
+  image("figs/experiments/100-population-mean-fitness.png"),
+  caption: [Evolução da _fitness_, $|N| = 100$],
+) <pop-100>
+
+#figure(
+  image("figs/experiments/500-population-mean-fitness.png"),
+  caption: [Evolução da _fitness_, $|N| = 500$],
+) <pop-500>
+
+Como é possível ver logo na @pop-30, a _fitness_ para 30 indivíduos por geração já é superior à _fitness_ da distância euclidiana. Também é possível perceber que, felizmente, o formato das curvas está dentro do esperado: nas primeiras gerações, a _fitness_ cresce consideravelmente e depois seu crescimento é mais lento. A _fitness_ da média da população também tem um bom comportamento: ela não é muito próxima da curva de melhor _fitness_, o que indica que a população não convergiu.
+
+Os gráficos de número de indivíduos repetidos também confirmam isso. Por uma questão de logística, este relatório não inclui todos os gráficos gerados (apesar de estarem disponíveis em `./assets`). De qualquer maneira, a título de completude, segue o gráfico para $|N| = 100$:
+
+#figure(
+  image("figs/experiments/100-population-mean-repetitions.png"),
+  caption: [Evolução da _fitness_, $|N| = 100$],
+) <pop-100-rep>
+
+Parece haver uma grande variância, mas isso é consequência da baixa quantidade de repetições. Como a pressão seletiva é baixíssima na configuração padrão ($|T| = 2$), o resultado é condizente. Tendo em vista, pela @pop-500, que $|N| = 500$ apresentou melhor resultado de _fitness_, a um tempo de execução não muito caro ($tilde.eq 4$ minutos por cada repetição), *a escolha para o tamanho da população foi 500*.
+
+
+== Probabilidades de Cruzamento e Mutação
+
+== Tamanho do Torneio
+
+== Elitismo
+
+== Miscelânea
+
+// --swap-operator-probability --swap-terminal-probability
+// --leaf-probability
+
 = Conclusões <conc>
 
 // Não esquecer de adicionar
