@@ -204,9 +204,9 @@ O roteiro de experimentação foi baseado no guia geral da especificação e é 
 
 Cada combinação de parâmetros foi repetida 10 vezes e todos os experimentos foram realizados a partir da modificação de apenas um parâmetro por vez. São analisados, principalmente, os gráficos da evolução da _fitness_ (com melhor, média e pior), da quantidade de repetições e do desempenho dos filhos (quantidade melhorada ou não). A escolha dos parâmetros foi feita de forma iterativa: o primeiro parâmetro foi escolhido e fixado, depois o segundo e assim por diante. Uma análise mais detalhada, mas incompatível com o tempo proposto, seria retroativamente tunar os parâmetros: por exemplo, ao definir o terceiro parâmetro, checar se os anteriores ainda são os melhores.
 
-Os experimentos foram realizados na base de câncer de mama. Como referência, usando-se a distância euclidiana, a Métrica V tem valor igual a, aproximadamente, 0.1256 neste conjunto de dados. Nesta seção, $|N|$ é usado para se referir ao tamanho da população, $|G|$ ao número de gerações e $|T|$ ao tamanho do torneio.
+Os experimentos foram realizados na base de câncer de mama. Como referência para este conjunto de dados, usando-se a distância euclidiana, a Métrica V tem valor igual a, aproximadamente, 0.1256. Em termos de notação, nesta seção $|N|$ é usado para se referir ao tamanho da população, $|G|$ ao número de gerações e $|T|$ ao tamanho do torneio.
 
-Esta seção está dividida da seguinte maneira: a @pop-and-gen relata a escolha dos tamanho da população e o número de gerações, a
+Esta seção está dividida da seguinte maneira: a @pop-and-gen relata a escolha dos tamanho da população e o número de gerações; a @cru-mut a escolha de probabilidades de cruzamento e mutação; a @tor o tamanho ideal do torneio e a @eli o efeito da presença ou ausência de elitismo. A @misc discute alguns parâmetros adicionais.
 
 == Tamanho da População e Número de Gerações <pop-and-gen>
 
@@ -241,16 +241,26 @@ Os gráficos de número de indivíduos repetidos também confirmam isso. Por uma
   caption: [Evolução da _fitness_, $|N| = 100$],
 ) <pop-100-rep>
 
-Parece haver uma grande variância, mas isso é consequência da baixa quantidade de repetições. Como a pressão seletiva é baixíssima na configuração padrão ($|T| = 2$), o resultado é condizente. Tendo em vista, pela @pop-500, que $|N| = 500$ apresentou melhor resultado de _fitness_, a um tempo de execução não muito caro ($tilde.eq 4$ minutos por cada repetição), *a escolha para o tamanho da população foi 500*.
+Parece haver uma grande variância, mas isso é consequência da baixa quantidade de indivíduos repetidos. Como a pressão seletiva é baixíssima na configuração padrão ($|T| = 2$), o resultado é condizente. Tendo em vista, pela @pop-500, que $|N| = 500$ apresentou melhor resultado de _fitness_ ($tilde.eq 0.25$), a um tempo de execução não muito caro ($tilde.eq 4$ minutos por cada repetição), a escolha para o tamanho da população inicialmente seria 500. No entanto, apesar do tempo relativamente curto para uma única execução, considerando-se o tempo de experimentação como um todo, *foi preferido o tamanho de população igual a 100*.
 
+Uma situação semelhante aconteceu com a quantidade de gerações. Foram consideradas as quatro opções do guia: *30*, *50*, *100* e *500*. Com o número de indivíduos fixo em 100, foram realizadas 10 repetições para 500 gerações. A partir dessa rodada, é possível induzir as métricas para as outras quantidades de gerações.
 
-== Probabilidades de Cruzamento e Mutação
+Pela @gen-500, a quantidade de gerações possui um grande impacto na _fitness_. A primeira linha amarela é o corte para 30 gerações; a segunda o corte para 50 e, a última, o corte para 100. Existe um salto relativamente grande entre 30 gerações e 100 gerações e, considerando o custo computacional, faz sentido preferir a opção maior. Esse não é o caso com a variação de 100 gerações para 500, que é muito cara (especialmente considerando o contexto de múltiplas execuções dos experimentos). Assim, *foi selecionada a quantidade de gerações igual a 100*.
 
-== Tamanho do Torneio
+Devido ao _tuning_ dos outros parâmetros não ter sido realizado a essa altura, os gráficos de relação com os filhos e quantidade de repetições ainda não trazem _insights_ e, por isso, foram omitidos (apesar de estarem disponíveis no repositório).
 
-== Elitismo
+#figure(
+  image("figs/experiments/500-generations-mean-fitness.png"),
+  caption: [Evolução da _fitness_, até $|G| = 500$],
+) <gen-500>
 
-== Miscelânea
+== Probabilidades de Cruzamento e Mutação <cru-mut>
+
+== Tamanho do Torneio <tor>
+
+== Elitismo <eli>
+
+== Miscelânea <misc>
 
 // --swap-operator-probability --swap-terminal-probability
 // --leaf-probability
