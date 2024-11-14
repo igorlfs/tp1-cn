@@ -238,7 +238,7 @@ Os gráficos de número de indivíduos repetidos também confirmam isso. Por uma
 
 #figure(
   image("figs/experiments/100-population-mean-repetitions.png"),
-  caption: [Evolução da _fitness_, $|N| = 100$],
+  caption: [Quantidade de repetições, $|N| = 100$],
 ) <pop-100-rep>
 
 Parece haver uma grande variância, mas isso é consequência da baixa quantidade de indivíduos repetidos. Como a pressão seletiva é baixíssima na configuração padrão ($|T| = 2$), o resultado é condizente. Tendo em vista, pela @pop-500, que $|N| = 500$ apresentou melhor resultado de _fitness_ ($tilde.eq 0.25$), a um tempo de execução não muito caro ($tilde.eq 4$ minutos por cada repetição), a escolha para o tamanho da população inicialmente seria 500. No entanto, apesar do tempo relativamente curto para uma única execução, considerando-se o tempo de experimentação como um todo, *foi preferido o tamanho de população igual a 100*.
