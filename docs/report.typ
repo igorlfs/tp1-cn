@@ -353,19 +353,35 @@ Ambas as alternativas foram piores do que a opção padrão. As médias de _fitn
 
 == Teste <result>
 
-A melhor combinação de parâmetros foi#footnote()[Lembrando que, para este _dataset_, a Métrica V do teste é 0.1256.]:
+A melhor combinação de parâmetros foi:
 
 ```sh
 ... --swap-terminal-probability 0.5 --swap-operator-probability 0.5 --leaf-probability 0.1 --crossover-probability 0.9 --mutation-probability 0.3 --tournament-size 2 --elitism-size 1 --max-generations 100 --population-size 100 --max-depth 7
 ```
 
-Ao final, a média das execuções com esses parâmetros foi 0.216 para o treino ($sigma tilde.eq 0.04$) e 0.11 para o teste ($sigma tilde.eq 0.08$). Na melhor execução com esses parâmetros, o resultado foi: 0.278 para o treino e 0.125 para o teste. No entanto, ao longo dos experimentos, o melhor resultado global para execução *única* foi gerado a partir dos parâmetros:
+Ao final, a média das execuções com esses parâmetros foi 0.216 (@high-mut) para o treino ($sigma tilde.eq 0.04$) e 0.11 para o teste ($sigma tilde.eq 0.08$)#footnote()[Lembrando que, para este _dataset_, a Métrica V do teste é 0.1256.]. Na melhor execução com esses parâmetros, o resultado foi de 0.278 para o treino e 0.125 para o teste. No entanto, ao longo dos experimentos, o melhor resultado global para execução *única* foi gerado a partir dos parâmetros:
 
 ```sh
 ... --swap-terminal-probability 0.5 --swap-operator-probability 0.5 --leaf-probability 0.1 --crossover-probability 0.9 --mutation-probability 0.05 --tournament-size 2 --elitism-size 1 --max-generations 500 --population-size 500 --max-depth 7
 ```
 
-Com incríveis 0.406 no treino, 0.295 no teste e rodando apenas por 15 minutos, essa execução mostra que a representação, apesar de simples, é muito poderosa. Como os parâmetros de gerações e população eram muito grandes, não foi considerado prático rodar todos os experimentos assim (ver comentários da @pop-and-gen).
+Com incríveis 0.406 no treino, 0.295 no teste e rodando apenas por 15 minutos, essa execução mostra que a representação, apesar de simples, é muito poderosa. Como os parâmetros de gerações e população eram muito grandes, não foi considerado prático rodar todos os experimentos seguindo deste modo (ver comentários da @pop-and-gen).
+
+Os melhores parâmetros também foram usados na base de vinhos (em que a distância euclidiana tem Métrica V igual a 0.04). Nela, os resultados foram: 0.179 para o treino ($sigma tilde.eq 0.01$) e 0.148 para o teste ($sigma tilde.eq 0.02$). A melhor execução obteve 0.196 no treino e 0.154 no teste.
+
+#figure(
+  image("figs/experiments/wine-mean-fitness.png"),
+  caption: [Evolução da _fitness_, _dataset_ _Wine Red_],
+)
+
+Como último critério para avaliação do algoritmo, ele foi comparado com uma busca aleatória "elitista" (que mantém a melhor árvore). O número de "gerações" e o tamanho da "população" foram iguais a 100#footnote()[O outro parâmetro relevante, a chance de folha, foi 0.1.] (ou seja, foram geradas 10 mil#footnote()[Por causa do "elitismo", cada "geração" tinha um indivíduo a menos.] árvores por execução). O resultado da _fitness_ média, de 10 execuções, é apresentado a seguir:
+
+#figure(
+  image("figs/experiments/random-mean-fitness.png"),
+  caption: [Evolução da _fitness_, busca aleatória, mantendo melhor indivíduo],
+)
+
+Felizmente, é inegável que a Programação Genética implementada é muito mais poderosa do que a busca aleatória, que terminou com média de 0.152. Ou seja, mais uma evidência de que o programa implementado é robusto.
 
 = Conclusões <conc>
 
