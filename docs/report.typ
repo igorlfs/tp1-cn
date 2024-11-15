@@ -365,9 +365,9 @@ Ao final, a média das execuções com esses parâmetros foi 0.216 para o treino
 ... --swap-terminal-probability 0.5 --swap-operator-probability 0.5 --leaf-probability 0.1 --crossover-probability 0.9 --mutation-probability 0.05 --tournament-size 2 --elitism-size 1 --max-generations 500 --population-size 500 --max-depth 7
 ```
 
-Com incríveis 0.406 no treino, 0.295 no teste e rodando apenas por 15 minutos, essa execução mostra que a representação, apesar de simples, é muito poderosa. Como os parâmetros de gerações e população eram muito grandes, não foi considerado prático rodar todos os experimentos assim (ver comentários na @pop-and-gen).
+Com incríveis 0.406 no treino, 0.295 no teste e rodando apenas por 15 minutos, essa execução mostra que a representação, apesar de simples, é muito poderosa. Como os parâmetros de gerações e população eram muito grandes, não foi considerado prático rodar todos os experimentos assim (ver comentários da @pop-and-gen).
 
 = Conclusões <conc>
 
-// Não esquecer de adicionar
-= Bibliografia
+#show bibliography: set heading(numbering: "1.")
+#bibliography("./bib.yml", style: "associacao-brasileira-de-normas-tecnicas", full: true)
