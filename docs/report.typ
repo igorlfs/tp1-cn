@@ -385,5 +385,7 @@ Felizmente, é inegável que a Programação Genética implementada é muito mai
 
 = Conclusões <conc>
 
+Sendo breve, pois a discussão dos experimentos aconteceu na seção anterior: foi uma ótima oportunidade de fortalecer os conceitos vistos em sala de aula. Acontecerem também alguns "aprendizados colaterais", especialmente na implementação da árvore binária e suas operações. No mais, foi uma boa prática de Python e o relatório, apesar de colossal, também foi uma boa prática de #link("https://typst.app/")[typst].
+
 #show bibliography: set heading(numbering: "1.")
 #bibliography("./bib.yml", style: "associacao-brasileira-de-normas-tecnicas", full: true)
