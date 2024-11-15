@@ -212,7 +212,7 @@ Esta subseção está dividida da seguinte maneira: a @pop-and-gen relata a esco
 
 === Tamanho da População e Número de Gerações <pop-and-gen>
 
-Primeiramente, foi decidido o tamanho da população, considerando as opções propostas no guia: *30*, *50*, *100* e *500*. Na rodada inicial, o restante dos parâmetros também foi baseado no guia, exceto os parâmetros adicionais do programa, que foram escolhidos arbitrariamente. Para um aprofundamento maior em quais foram os parâmetros inciais, recomenda-se verificar os registros nos _dumps_. A única diferença notável foi o número de gerações, que foi configurado como *100*. A partir dos registros dessa primeira etapa, foram construídos os gráficos a seguir. A média das repetições é destacada, enquanto a região mais clara é o intervalo de 95% de confiança.
+Primeiramente, foi decidido o tamanho da população, considerando as opções propostas no guia: *30*, *50*, *100* e *500*. Na rodada inicial, o restante dos parâmetros também foi baseado no guia, exceto os parâmetros adicionais do programa, que foram escolhidos arbitrariamente (`--leaf-probability 0.1 --swap-operator-probability 0.5 --swap-terminal-probability 0.5`). A única diferença notável foi o número de gerações, que foi configurado como *100*. A partir dos registros dessa primeira etapa, foram construídos os gráficos a seguir. A média das repetições é destacada, enquanto a região mais clara é o intervalo de 95% de confiança.
 
 #figure(
   image("figs/experiments/30-population-mean-fitness.png"),
@@ -324,14 +324,29 @@ Todos os experimentos anteriores usaram elitismo, copiando exclusivamente o melh
   caption: [Evolução da _fitness_, sem elitismo],
 )
 
-Relembrando, a referência para comparação é a @high-mut. É evidente que o elitismo possui um grande papel no desempenho do algoritmo, uma vez que a média caiu de 0.216 para 0.139. É até surpreendente o impacto ser tão elevado.
+Relembrando, a referência para comparação é a @high-mut. É evidente que o elitismo possui um grande papel no desempenho do algoritmo, uma vez que a média caiu de 0.216 para 0.139. É até surpreendente o impacto ser tão elevado. Naturalmente, o elitismo foi mantido.
 
 === Miscelânea <misc>
 
+Nesta subseção, os demais parâmetros são tunados: a chance de se gerar uma folha antes do tamanho máximo (`--leaf-probability`, @leaf) e as variantes de mutação (`--swap-operator-probability` e `--swap-terminal-probability`, @var-prob). Como esses parâmetros não estavam presentes no guia de sugestão, os valores foram, em sua maioria, baseados em testes empíricos preliminares.
+
+==== Folhas <leaf>
+
+O valor padrão para esse parâmetro foi, até então 0.1: a ideia era que o algoritmo fosse capaz de gerar árvores com profundidades relativamente grandes, uma vez que probabilidades maiores (como 50%), podem encerrar a geração prematuramente. No entanto, é também interessante explorar árvores menores, uma vez que as árvores grandes podem acabar causando um _overfitting_ nos dados de treino. De fato, muitas árvores apesar de boas no treino, não conseguiam separar muito bem os dados de teste.
+
+Além disso, respondendo à pergunta da especificação: *não existe* maneira simples de se medir o _bloating_ no algoritmo proposto. Mas essa questão está intimamente ligada ao `--leaf-probability`, uma vez que há mais chance de introduzir operadores redundantes em árvores maiores. A partir dessas considerações, foram testados 5 valores para o parâmetro: *0.05, 0.2, 0.3, 0.4 e 0.5*. Como essa seção é específica da implementação, apenas as conclusões chave são destacadas aqui.
+
+Para os valores próximos do padrão (0.05 e 0.2), não houve diferença significativa em nenhum aspecto. Para os outros casos, houve uma degradação mais significativa da _fitness_, e comportamentos como aumento de repetições foram mais comuns (o que é esperado pelo tamanho das árvores). Na realidade, para 0.5, as árvores são tão pequenas que eventualmente os operadores genéticos tomam conta (@leaf-rep), aumentando a diversidade (via expansão de nó). Assim, *a probabilidade 0.1 foi mantida*.
+
+#figure(
+  image("figs/experiments/0.5-leaf-mean-repetitions.png"),
+  caption: [Evolução da _fitness_, sem elitismo],
+) <leaf-rep>
+
+==== Variante de Mutação <var-prob>
+
 == Teste <result>
 
-// --swap-operator-probability --swap-terminal-probability
-// --leaf-probability
 
 = Conclusões <conc>
 
