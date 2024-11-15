@@ -204,11 +204,13 @@ O roteiro de experimentação foi baseado no guia geral da especificação e é 
 
 Cada combinação de parâmetros foi repetida 10 vezes e todos os experimentos foram realizados a partir da modificação de apenas um parâmetro por vez. São analisados, principalmente, os gráficos da evolução da _fitness_ (com melhor, média e pior), da quantidade de repetições e do desempenho dos filhos (quantidade melhorada ou não). A escolha dos parâmetros foi feita de forma iterativa: o primeiro parâmetro foi escolhido e fixado, depois o segundo e assim por diante. Uma análise mais detalhada, mas incompatível com o tempo proposto, seria retroativamente tunar os parâmetros: por exemplo, ao definir o terceiro parâmetro, checar se os anteriores ainda são os melhores.
 
-Os experimentos foram realizados na base de câncer de mama. Como referência para este conjunto de dados, usando-se a distância euclidiana, a Métrica V tem valor igual a, aproximadamente, 0.1256. Em termos de notação, nesta seção $|N|$ é usado para se referir ao tamanho da população, $|G|$ ao número de gerações e $|T|$ ao tamanho do torneio.
+Os experimentos foram realizados na base de câncer de mama (a outra base é testada na @result). Como referência para este conjunto de dados, usando-se a distância euclidiana, a Métrica V tem valor igual a, aproximadamente, 0.1256. Em termos de notação, nesta seção $|N|$ é usado para se referir ao tamanho da população, $|G|$ ao número de gerações e $|T|$ ao tamanho do torneio.
 
-Esta seção está dividida da seguinte maneira: a @pop-and-gen relata a escolha dos tamanho da população e o número de gerações; a @cru-mut a escolha de probabilidades de cruzamento e mutação; a @tor o tamanho ideal do torneio e a @eli o efeito da presença ou ausência de elitismo. A @misc discute alguns parâmetros adicionais.
+== _Tuning_ de parâmetros
 
-== Tamanho da População e Número de Gerações <pop-and-gen>
+Esta subseção está dividida da seguinte maneira: a @pop-and-gen relata a escolha dos tamanho da população e o número de gerações; a @cru-mut a escolha de probabilidades de cruzamento e mutação; a @tor o tamanho ideal do torneio e a @eli o efeito da presença ou ausência de elitismo. A @misc discute alguns parâmetros adicionais.
+
+=== Tamanho da População e Número de Gerações <pop-and-gen>
 
 Primeiramente, foi decidido o tamanho da população, considerando as opções propostas no guia: *30*, *50*, *100* e *500*. Na rodada inicial, o restante dos parâmetros também foi baseado no guia, exceto os parâmetros adicionais do programa, que foram escolhidos arbitrariamente. Para um aprofundamento maior em quais foram os parâmetros inciais, recomenda-se verificar os registros nos _dumps_. A única diferença notável foi o número de gerações, que foi configurado como *100*. A partir dos registros dessa primeira etapa, foram construídos os gráficos a seguir. A média das repetições é destacada, enquanto a região mais clara é o intervalo de 95% de confiança.
 
@@ -245,7 +247,7 @@ Parece haver uma grande variância, mas isso é consequência da baixa quantidad
 
 Uma situação semelhante aconteceu com a quantidade de gerações. Foram consideradas as quatro opções do guia: *30*, *50*, *100* e *500*. Com o número de indivíduos fixo em 100, foram realizadas 10 repetições para 500 gerações. A partir dessa rodada, é possível induzir as métricas para as outras quantidades de gerações.
 
-Pela @gen-500, a quantidade de gerações possui um grande impacto na _fitness_. A primeira linha amarela é o corte para 30 gerações; a segunda o corte para 50 e, a última, o corte para 100. Existe um salto relativamente grande entre 30 gerações e 100 gerações e, considerando o custo computacional, faz sentido preferir a opção maior. Esse não é o caso com a variação de 100 gerações para 500, que é muito cara (especialmente considerando o contexto de múltiplas execuções dos experimentos). Assim, *foi selecionada a quantidade de gerações igual a 100*.
+Pela @gen-500, a quantidade de gerações possui um grande impacto na _fitness_. A primeira linha amarela é o corte para 30 gerações; a segunda o corte para 50 e, a última, o corte para 100. Existe um salto relativamente grande entre 30 gerações e 100 gerações e, considerando o custo computacional, faz sentido preferir a opção maior. Esse não é o caso com a variação de 100 gerações para 500, que é muito cara (especialmente considerando o contexto de múltiplas execuções dos experimentos), apesar da boa melhora em desempenho (de $tilde.eq 0.214$ a $tilde.eq 0.2482$). Assim, *foi selecionada a quantidade de gerações igual a 100*.
 
 Devido ao _tuning_ dos outros parâmetros não ter sido realizado a essa altura, os gráficos de relação com os filhos e quantidade de repetições ainda não trazem _insights_ e, por isso, foram omitidos (apesar de estarem disponíveis no repositório).
 
@@ -254,13 +256,49 @@ Devido ao _tuning_ dos outros parâmetros não ter sido realizado a essa altura,
   caption: [Evolução da _fitness_, até $|G| = 500$],
 ) <gen-500>
 
-== Probabilidades de Cruzamento e Mutação <cru-mut>
+=== Probabilidades de Cruzamento e Mutação <cru-mut>
 
-== Tamanho do Torneio <tor>
+Com o tamanho da população fixo em 100 e o número de gerações também fixo em 100, foram realizados alguns experimentos para extrair as melhores probabilidades de cruzamento e mutação. As probabilidades relacionadas às variantes de mutação são discutidas na @misc. A configuração "padrão" (usada nos experimentos até então) possui alta taxa de cruzamento (0.9) e baixa taxa de mutação (0.05). Foram realizados testes para 3 outras combinações:
 
-== Elitismo <eli>
+- Baixa taxa de cruzamento (0.6), mantendo a taxa de mutação;
+- Alta taxa de mutação (0.3), mantendo a taxa de cruzamento;
+- Ambas as mudanças anteriores, simultaneamente.
 
-== Miscelânea <misc>
+A evolução da _fitness_ da configuração padrão pode ser vista na @pop-100, com _fitness_ média final aproximadamente igual a 0.207. Ver os comentários da seção @pop-and-gen sobre as outras estatísticas. A seguir, as combinações são avaliadas uma a uma, em ordem, a partir dos gráficos gerados.
+
+#figure(
+  image("figs/experiments/operators/cross-low-mean-fitness.png"),
+  caption: [Evolução da _fitness_, _crossover_ baixo],
+)
+
+É perceptível que o desvio padrão aumentou em relação à configuração padrão. Além disso, o desempenho médio foi um pouco abaixo da configuração padrão, não atingindo 0.2. Analisando a performance dos filhos, é possível perceber nitidamente que a diversidade caiu (em alguns casos, metade da população está repetida) e a há mais dificuldade da busca ser "guiada" para uma direção melhor.
+
+#figure(
+  image("figs/experiments/operators/cross-low-mean-children.png"),
+  caption: [Evolução dos filhos, _crossover_ baixo],
+)
+
+#figure(
+  image("figs/experiments/operators/cross-low-mean-repetitions.png"),
+  caption: [Quantidade de repetições, _crossover_ baixo],
+)
+
+Variando apenas a mutação, a história é diferente. A _fitness_ original foi batida (embora não por muito): o valor ficou como 0.216, na média. No entanto, o _plot_ da evolução dos filhos continuou completamente caótico e, devido à grande chance de alteração, o número de indivíduos repetidos foi extremamente baixo, beirando apenas uma ou duas repetições.
+
+#figure(
+  image("figs/experiments/operators/mutation-high-mean-fitness.png", width: 110%),
+  caption: [Evolução da _fitness_, mutação alta],
+)
+
+Por fim, ambas as modificações foram aplicadas, para realizar a comparação "cruzada". Em resumo, não houve melhora, com média 0.20. De fato, os efeitos observados foram uma combinação dos casos anteriores: o comportamento dos filhos foi consistente em piorar e houve baixa repetição, por volta de 8 indivíduos (as figuras estão disponíveis no repositório). Então, a decisão foi *manter a taxa alta de cruzamento (0.9) mas aumentar a taxa de mutação para 0.3*.
+
+=== Tamanho do Torneio <tor>
+
+=== Elitismo <eli>
+
+=== Miscelânea <misc>
+
+== Teste <result>
 
 // --swap-operator-probability --swap-terminal-probability
 // --leaf-probability
