@@ -13,7 +13,6 @@ def evaluate_fitness(
     evaluations = [tree.evaluate(row) for row in df_dict]
     distance_matrix_train = _get_distance_matrix(len(evaluations), evaluations)
     model = AgglomerativeClustering(n_clusters=num_labels, metric="precomputed", linkage="average")
-    model.fit(distance_matrix_train)
     y_pred = model.fit_predict(distance_matrix_train)
     return float(v_measure_score(y, y_pred))
 
