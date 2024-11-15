@@ -190,7 +190,7 @@ As outras variantes são: um terminal pode ser expandido em uma nova árvore e u
 
 Como o tamanho máximo do indivíduo foi limitado a 3 na geração destas figuras, a @mtt e a @mes demonstram uma grande similaridade, uma vez que a expansão da subárvore foi limitada a apenas um nó. Apesar do ganho em explorabilidade, a diversidade da mutação possui o custo de introduzir dois novos parâmetros.
 
-=== Fitness
+=== _Fitness_
 
 Além do comentário sobre o cálculo das distâncias da @pre, não há muito o que comentar sobre sua implementação. Tentou-se realizar o cálculo das distâncias com programação paralela (via #link("https://numba.pydata.org/")[Numba]), mas não foram obtidos bons resultados#footnote()[Outra possibilidade de melhoramento de performance que não se mostrou promissora, foi o uso do compilador #link("https://pypy.org/")[pypy].]. De qualquer modo, o Numba foi usado para compilar a função de cálculo de distâncias, o que tornou a função mais rápida (a diferença é mais notável para instâncias maiores).
 
@@ -345,8 +345,27 @@ Para os valores próximos do padrão (0.05 e 0.2), não houve diferença signifi
 
 ==== Variante de Mutação <var-prob>
 
+Para finalizar o ajuste de parâmetros, foram testadas algumas modificações das probabilidades de troca da mutação, que por padrão, ambas tinham valor igual a 0.5. Como foi visto na seção anterior (@leaf), a expansão pode ser muito importante em algumas situações. Relembrando, em uma mutação, um nó é escolhido e ele tanto pode ser trocado por outro nó do mesmo tipo, ou ser expandido ou reduzido, a depender se for um terminal ou não (e as probabilidades desses eventos acontecerem são controladas por `--swap-operator-probability` e `--swap-terminal-probability`). Inicialmente, este era apenas um único parâmetro, mas averiguou-se que poderia ser mais interessante ter um controle mais fino.
+
+Nos testes a seguir, primeiro é explorada a variação de `--swap-operator-probability`, com duas alternativas: baixa (0.2) e alta (0.8). Depois, a melhor escolha é fixada e as mesmas opções são testadas com o outro parâmetro. Pela especifidade, somente pontos chave são destacados.
+
+Ambas as alternativas foram piores do que a opção padrão. As médias de _fitness_ foram 0.204 (probabilidade baixa) e 0.194 (probabilidade alta). Por fim, o _tuning_, do `--swap-terminal-probability` trouxe resultados semelhantes, e não houve melhora. As médias de _fitness_ foram 0.195 (probabilidade baixa) e 0.184 (probabilidade alta). Portanto, *ambos os parâmetros foram mantidos em 0.5*.
+
 == Teste <result>
 
+A melhor combinação de parâmetros foi#footnote()[Lembrando que, para este _dataset_, a Métrica V do teste é 0.1256.]:
+
+```sh
+... --swap-terminal-probability 0.5 --swap-operator-probability 0.5 --leaf-probability 0.1 --crossover-probability 0.9 --mutation-probability 0.3 --tournament-size 2 --elitism-size 1 --max-generations 100 --population-size 100 --max-depth 7
+```
+
+Ao final, a média das execuções com esses parâmetros foi 0.216 para o treino ($sigma tilde.eq 0.04$) e 0.11 para o teste ($sigma tilde.eq 0.08$). Na melhor execução com esses parâmetros, o resultado foi: 0.278 para o treino e 0.125 para o teste. No entanto, ao longo dos experimentos, o melhor resultado global para execução *única* foi gerado a partir dos parâmetros:
+
+```sh
+... --swap-terminal-probability 0.5 --swap-operator-probability 0.5 --leaf-probability 0.1 --crossover-probability 0.9 --mutation-probability 0.05 --tournament-size 2 --elitism-size 1 --max-generations 500 --population-size 500 --max-depth 7
+```
+
+Com incríveis 0.406 no treino, 0.295 no teste e rodando apenas por 15 minutos, essa execução mostra que a representação, apesar de simples, é muito poderosa. Como os parâmetros de gerações e população eram muito grandes, não foi considerado prático rodar todos os experimentos assim (ver comentários na @pop-and-gen).
 
 = Conclusões <conc>
 
