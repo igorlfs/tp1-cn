@@ -288,11 +288,32 @@ Variando apenas a mutação, a história é diferente. A _fitness_ original foi 
 #figure(
   image("figs/experiments/operators/mutation-high-mean-fitness.png", width: 110%),
   caption: [Evolução da _fitness_, mutação alta],
-)
+) <high-mut>
 
 Por fim, ambas as modificações foram aplicadas, para realizar a comparação "cruzada". Em resumo, não houve melhora, com média 0.20. De fato, os efeitos observados foram uma combinação dos casos anteriores: o comportamento dos filhos foi consistente em piorar e houve baixa repetição, por volta de 8 indivíduos (as figuras estão disponíveis no repositório). Então, a decisão foi *manter a taxa alta de cruzamento (0.9) mas aumentar a taxa de mutação para 0.3*.
 
 === Tamanho do Torneio <tor>
+
+Na configuração padrão, o tamanho do torneio é 2, ou seja, há uma baixa pressão seletiva. Tentou-se aumentar o tamanho do torneio para 5, para avaliar uma pressão seletiva mais alta. A execução referência, agora é a representada pela @high-mut, devido à escolha dos parâmetros de operadores. O aumento de pressão seletiva pouco melhorou os resultados: a nova média obtida foi 0.223. Apesar da pequena diferença neste quesito, as outras estatísticas apresentam comportamentos bastante distintos.
+
+#figure(
+  image("figs/experiments/5-tournament-mean-fitness.png"),
+  caption: [Evolução da _fitness_, $|T| = 5$],
+)
+
+#figure(
+  image("figs/experiments/5-tournament-mean-children.png"),
+  caption: [Evolução dos filhos, $|T| = 5$],
+)
+
+#figure(
+  image("figs/experiments/5-tournament-mean-repetitions.png"),
+  caption: [Quantidade de repetições, $|T| = 5$],
+)
+
+É notável a imensa variância do número de repetições. De fato, o desvio padrão ficou por volta de 30, na maioria das gerações#footnote()[Todos os desvios padrão, de todas as estatísticas das execuções, divididos por geração, se encontram na pasta `./assets/statistics`.]. Esse é um indício de que o algoritmo não é bem comportado com esse parâmetro. Por outro lado, a evolução dos filhos foi mais consistente se comparada à rodada de referência.
+
+Apesar da pequena melhora, optou-se por manter $|T| = 2$, para evitar reduzir a confiabilidade do programa (evitar a variância mais elevada). Com isso, quase todos os parâmetros já foram definidos, faltando somente a ausência ou presença do elitismo.
 
 === Elitismo <eli>
 
