@@ -313,9 +313,18 @@ Na configuração padrão, o tamanho do torneio é 2, ou seja, há uma baixa pre
 
 É notável a imensa variância do número de repetições. De fato, o desvio padrão ficou por volta de 30, na maioria das gerações#footnote()[Todos os desvios padrão, de todas as estatísticas das execuções, divididos por geração, se encontram na pasta `./assets/statistics`.]. Esse é um indício de que o algoritmo não é bem comportado com esse parâmetro. Por outro lado, a evolução dos filhos foi mais consistente se comparada à rodada de referência.
 
-Apesar da pequena melhora, optou-se por manter $|T| = 2$, para evitar reduzir a confiabilidade do programa (evitar a variância mais elevada). Com isso, quase todos os parâmetros já foram definidos, faltando somente a ausência ou presença do elitismo.
+Apesar da pequena melhora, *optou-se por manter $|T| = 2$*, para evitar reduzir a confiabilidade do programa (evitar a variância mais elevada). Com isso, quase todos os parâmetros já foram definidos, faltando somente a ausência ou presença do elitismo.
 
 === Elitismo <eli>
+
+Todos os experimentos anteriores usaram elitismo, copiando exclusivamente o melhor indivíduo para a próxima geração. Nesta seção, o intuito é observar o impacto da ausência de elitismo. Aqui, o foco é a _fitness_.
+
+#figure(
+  image("figs/experiments/fitness-no-elitism.png"),
+  caption: [Evolução da _fitness_, sem elitismo],
+)
+
+Relembrando, a referência para comparação é a @high-mut. É evidente que o elitismo possui um grande papel no desempenho do algoritmo, uma vez que a média caiu de 0.216 para 0.139. É até surpreendente o impacto ser tão elevado.
 
 === Miscelânea <misc>
 
