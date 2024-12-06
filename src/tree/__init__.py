@@ -40,8 +40,8 @@ class TreeNode:
         if self.left is None and self.right is None:
             return row[self.value]
 
-        left_value = self.left and self.left.evaluate(row) or 0
-        right_value = self.right and self.right.evaluate(row) or 0
+        left_value = (self.left and self.left.evaluate(row)) or 0
+        right_value = (self.right and self.right.evaluate(row)) or 0
 
         match self.value:
             case Operations.ADD:

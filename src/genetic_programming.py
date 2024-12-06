@@ -49,7 +49,10 @@ def evolution_loop(
 
             crossover_happens = rng.random() < config["crossover_prob"]
 
-            child1, child2 = crossover_happens and crossover(parent1, parent2) or [parent1, parent2]
+            child1, child2 = (crossover_happens and crossover(parent1, parent2)) or [
+                parent1,
+                parent2,
+            ]
 
             assert child1 is not None and child2 is not None
 
@@ -60,7 +63,7 @@ def evolution_loop(
             next_generation.append(child1)
 
             # only consider the current parent if using only mutation
-            if next_fitness[-1] > (crossover_happens and avg_fitness_parents or fitness[j]):
+            if next_fitness[-1] > ((crossover_happens and avg_fitness_parents) or fitness[j]):
                 children_improved += 1
             else:
                 children_worsened += 1
@@ -73,7 +76,9 @@ def evolution_loop(
                 next_fitness.append(evaluate_fitness(df_dict, child2, y_train, num_labels))
                 next_generation.append(child2)
 
-                if next_fitness[-1] > (crossover_happens and avg_fitness_parents or fitness[j + 1]):
+                if next_fitness[-1] > (
+                    (crossover_happens and avg_fitness_parents) or fitness[j + 1]
+                ):
                     children_improved += 1
                 else:
                     children_worsened += 1
